@@ -18,8 +18,8 @@ import com.vaadin.flow.router.Route;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Credit Card Form")
-@Route("")
-@Menu(order = 0, icon = LineAwesomeIconUrl.CREDIT_CARD)
+@Route("demo")
+@Menu(order = 10, icon = LineAwesomeIconUrl.CREDIT_CARD)
 public class CreditCardFormView extends Div {
 
     private TextField cardNumber;

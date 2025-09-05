@@ -5,6 +5,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * The entry point of the Spring Boot application.
@@ -14,7 +16,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-@PageTitle("My App")
+@EntityScan("com.fosagri.application.model")
+@EnableJpaRepositories("com.fosagri.application.repository")
+@PageTitle("FOS AGRI Data")
 @Theme(value = "data-app")
 public class Application implements AppShellConfigurator {
 
