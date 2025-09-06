@@ -45,6 +45,7 @@ public class NouvelleDemandeDialog extends Dialog {
     private Component currentForm;
     private FormSchema currentFormSchema;
     private Map<String, Object> currentFormData;
+    private Map<String, Object> formCurrentValues; // Direct reference to form's currentValues
     private Button submitButton;
     
     public NouvelleDemandeDialog(PrestationRefService prestationService,
@@ -82,7 +83,7 @@ public class NouvelleDemandeDialog extends Dialog {
         agentCombo.setRequired(true);
         
         prestationCombo = new ComboBox<>("Prestation");
-        prestationCombo.setItems(prestationService.findOpenPrestations());
+        prestationCombo.setItems(prestationService.findActivePrestations());
         prestationCombo.setItemLabelGenerator(PrestationRef::getLabel);
         prestationCombo.setWidthFull();
         prestationCombo.setRequired(true);
@@ -124,6 +125,7 @@ public class NouvelleDemandeDialog extends Dialog {
         currentForm = null;
         currentFormSchema = null;
         currentFormData = null;
+        formCurrentValues = null;
         
         if (prestation == null) {
             submitButton.setEnabled(false);
@@ -159,8 +161,13 @@ public class NouvelleDemandeDialog extends Dialog {
                 
                 currentFormSchema = FormSchema.fromJson(prestation.getFormSchemaJson());
                 AdhAgent selectedAgent = agentCombo.getValue();
-                // Create form without callback - we'll collect answers manually during submission
-                currentForm = FormRenderer.createForm(currentFormSchema, null, selectedAgent, enfantService, conjointService);
+                
+                // Create form with access to currentValues for file uploads
+                FormRenderer.FormWithValues formWithValues = FormRenderer.createFormWithValues(currentFormSchema, null, selectedAgent, enfantService, conjointService);
+                currentForm = formWithValues.form;
+                formCurrentValues = formWithValues.currentValues;
+                
+                System.out.println("✅ Form created with currentValues reference: " + formCurrentValues.size() + " initial fields");
                 prestationInfo.add(currentForm);
                 
                 submitButton.setEnabled(true);
@@ -210,6 +217,7 @@ public class NouvelleDemandeDialog extends Dialog {
                 currentForm = null;
                 currentFormSchema = null;
                 currentFormData = null;
+                formCurrentValues = null;
                 submitButton.setEnabled(false);
                 
                 // Afficher un message d'erreur dans le conteneur du formulaire
@@ -311,19 +319,28 @@ public class NouvelleDemandeDialog extends Dialog {
         }
         
         try {
-            // Use reflection to access the FormRenderer's collectAnswers method
-            // We need to find the field components within the form structure
-            java.lang.reflect.Method collectMethod = FormRenderer.class.getDeclaredMethod("collectAnswers", 
-                FormSchema.class, Map.class);
-            collectMethod.setAccessible(true);
-            
             // Extract field components from the form
             Map<String, Component> fieldComponents = extractFieldComponents(currentForm);
             
-            @SuppressWarnings("unchecked")
-            Map<String, Object> answers = (Map<String, Object>) collectMethod.invoke(null, currentFormSchema, fieldComponents);
+            // Use the direct reference to form's currentValues if available
+            if (formCurrentValues != null) {
+                System.out.println("📊 Using form's currentValues: " + formCurrentValues.size() + " fields");
+                
+                // Collect latest values from components and merge with tracked values
+                Map<String, Object> componentAnswers = FormRenderer.collectAnswers(currentFormSchema, fieldComponents, formCurrentValues);
+                
+                System.out.println("📋 Final collected answers: " + componentAnswers.size() + " fields");
+                for (Map.Entry<String, Object> entry : componentAnswers.entrySet()) {
+                    System.out.println("  - " + entry.getKey() + ": " + (entry.getValue() != null ? entry.getValue().getClass().getSimpleName() : "null"));
+                }
+                
+                return componentAnswers;
+            } else {
+                System.out.println("⚠️ No form currentValues reference, collecting from components only");
+                Map<String, Object> answers = FormRenderer.collectAnswers(currentFormSchema, fieldComponents);
+                return answers;
+            }
             
-            return answers;
         } catch (Exception e) {
             System.err.println("Erreur lors de la collecte des réponses du formulaire: " + e.getMessage());
             e.printStackTrace();

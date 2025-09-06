@@ -41,21 +41,9 @@ public class DemandePrestation {
     
     private Long traitePar; // ID de l'utilisateur qui traite la demande
     
-    // Documents attachés (si nécessaire) - Temporarily disabled to fix migration
-    // @Column(columnDefinition = "BYTEA")
-    // private byte[] document1;
-    // private String document1_filename;
-    // private String document1_contentType;
-    
-    // @Column(columnDefinition = "BYTEA")
-    // private byte[] document2;
-    // private String document2_filename;
-    // private String document2_contentType;
-    
-    // @Column(columnDefinition = "BYTEA")
-    // private byte[] document3;
-    // private String document3_filename;
-    // private String document3_contentType;
+    // Documents attachés - stored as JSON in TEXT field to avoid BLOB issues
+    @Column(columnDefinition = "TEXT")
+    private String documentsJson; // JSON array of file objects with base64 content
     
     //------------------------- Secure Logs---
     @Temporal(TemporalType.TIMESTAMP)
@@ -82,5 +70,13 @@ public class DemandePrestation {
     @PreUpdate
     protected void onUpdate() {
         updated = new Date();
+    }
+    
+    public String getDocumentsJson() {
+        return documentsJson;
+    }
+    
+    public void setDocumentsJson(String documentsJson) {
+        this.documentsJson = documentsJson;
     }
 }

@@ -13,9 +13,17 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.server.StreamResource;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.List;
+import java.util.Base64;
+import java.io.ByteArrayInputStream;
 
 public class DemandeDetailsDialog extends Dialog {
     
@@ -46,6 +54,9 @@ public class DemandeDetailsDialog extends Dialog {
         
         // Réponses du formulaire
         layout.add(createFormResponses());
+        
+        // Fichiers joints
+        layout.add(createFilesSection());
         
         // Historique des traitements
         layout.add(createTreatmentHistory());
@@ -223,6 +234,161 @@ public class DemandeDetailsDialog extends Dialog {
         }
         
         return section;
+    }
+    
+    private VerticalLayout createFilesSection() {
+        VerticalLayout section = new VerticalLayout();
+        section.setPadding(false);
+        section.setSpacing(false);
+        
+        H3 title = new H3("Fichiers joints");
+        section.add(title);
+        
+        if (demande.getDocumentsJson() != null && !demande.getDocumentsJson().trim().isEmpty()) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> documentsData = mapper.readValue(demande.getDocumentsJson(), new TypeReference<Map<String, Object>>() {});
+                
+                boolean hasFiles = false;
+                
+                for (Map.Entry<String, Object> entry : documentsData.entrySet()) {
+                    String fieldName = entry.getKey();
+                    Object value = entry.getValue();
+                    
+                    if (value instanceof List<?>) {
+                        @SuppressWarnings("unchecked")
+                        List<Map<String, Object>> files = (List<Map<String, Object>>) value;
+                        
+                        if (!files.isEmpty()) {
+                            hasFiles = true;
+                            
+                            H4 fieldTitle = new H4("📎 " + fieldName);
+                            section.add(fieldTitle);
+                            
+                            for (Map<String, Object> fileData : files) {
+                                section.add(createFileItem(fileData));
+                            }
+                        }
+                    }
+                }
+                
+                if (!hasFiles) {
+                    Div noFilesDiv = new Div();
+                    noFilesDiv.setText("Aucun fichier joint à cette demande");
+                    noFilesDiv.getStyle().set("font-style", "italic")
+                                      .set("color", "var(--lumo-secondary-text-color)");
+                    section.add(noFilesDiv);
+                }
+                
+            } catch (Exception e) {
+                Div errorDiv = new Div();
+                errorDiv.setText("Erreur lors du chargement des fichiers: " + e.getMessage());
+                errorDiv.getStyle().set("color", "var(--lumo-error-text-color)");
+                section.add(errorDiv);
+                
+                // Debug information
+                Div debugDiv = new Div();
+                debugDiv.setText("Debug: Raw documentsJson = " + demande.getDocumentsJson());
+                debugDiv.getStyle().set("font-size", "0.8em")
+                          .set("color", "var(--lumo-secondary-text-color)")
+                          .set("margin-top", "0.5rem")
+                          .set("font-family", "monospace")
+                          .set("word-break", "break-all");
+                section.add(debugDiv);
+            }
+        } else {
+            Div noFilesDiv = new Div();
+            noFilesDiv.setText("Aucun fichier joint à cette demande");
+            noFilesDiv.getStyle().set("font-style", "italic")
+                              .set("color", "var(--lumo-secondary-text-color)");
+            section.add(noFilesDiv);
+            
+            // Debug information
+            Div debugDiv = new Div();
+            debugDiv.setText("Debug: documentsJson = " + (demande.getDocumentsJson() == null ? "null" : "'" + demande.getDocumentsJson() + "'"));
+            debugDiv.getStyle().set("font-size", "0.8em")
+                      .set("color", "var(--lumo-secondary-text-color)")
+                      .set("margin-top", "0.5rem")
+                      .set("font-family", "monospace");
+            section.add(debugDiv);
+        }
+        
+        return section;
+    }
+    
+    private HorizontalLayout createFileItem(Map<String, Object> fileData) {
+        HorizontalLayout fileItem = new HorizontalLayout();
+        fileItem.setSpacing(true);
+        fileItem.setAlignItems(FlexComponent.Alignment.CENTER);
+        fileItem.getStyle().set("padding", "8px")
+                          .set("margin-bottom", "4px")
+                          .set("background-color", "var(--lumo-contrast-5pct)")
+                          .set("border-radius", "var(--lumo-border-radius)");
+        
+        // File icon
+        Span icon = new Span(VaadinIcon.FILE.create());
+        icon.getStyle().set("color", "var(--lumo-primary-text-color)");
+        
+        // File info
+        VerticalLayout fileInfo = new VerticalLayout();
+        fileInfo.setPadding(false);
+        fileInfo.setSpacing(false);
+        
+        String filename = String.valueOf(fileData.get("filename"));
+        String contentType = String.valueOf(fileData.get("contentType"));
+        Object sizeObj = fileData.get("size");
+        
+        Span nameSpan = new Span(filename);
+        nameSpan.getStyle().set("font-weight", "500");
+        
+        String sizeText = "";
+        if (sizeObj instanceof Number) {
+            long size = ((Number) sizeObj).longValue();
+            sizeText = formatFileSize(size);
+        }
+        
+        Span detailsSpan = new Span(contentType + (sizeText.isEmpty() ? "" : " • " + sizeText));
+        detailsSpan.getStyle().set("font-size", "12px")
+                              .set("color", "var(--lumo-secondary-text-color)");
+        
+        fileInfo.add(nameSpan, detailsSpan);
+        
+        // Download button
+        Button downloadBtn = new Button("Télécharger", VaadinIcon.DOWNLOAD.create());
+        downloadBtn.addThemeVariants(com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL,
+                                   com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY);
+        
+        String base64Content = String.valueOf(fileData.get("base64Content"));
+        if (base64Content != null && !base64Content.equals("null")) {
+            StreamResource resource = new StreamResource(filename, () -> {
+                try {
+                    byte[] fileBytes = Base64.getDecoder().decode(base64Content);
+                    return new ByteArrayInputStream(fileBytes);
+                } catch (Exception e) {
+                    return new ByteArrayInputStream(new byte[0]);
+                }
+            });
+            
+            Anchor downloadLink = new Anchor(resource, "");
+            downloadLink.add(downloadBtn);
+            downloadLink.getElement().setAttribute("download", true);
+            
+            fileItem.add(icon, fileInfo, downloadLink);
+        } else {
+            downloadBtn.setEnabled(false);
+            downloadBtn.setText("Indisponible");
+            fileItem.add(icon, fileInfo, downloadBtn);
+        }
+        
+        fileItem.setFlexGrow(1, fileInfo);
+        
+        return fileItem;
+    }
+    
+    private String formatFileSize(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
+        return String.format("%.1f MB", bytes / (1024.0 * 1024.0));
     }
     
     private String getStatutLabel(String statut) {

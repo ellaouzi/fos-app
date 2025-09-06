@@ -17,11 +17,18 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.io.InputStream;
+import java.util.Base64;
 
 /**
  * FormRenderer - Renders dynamic forms based on FormSchema
@@ -33,6 +40,7 @@ import java.util.stream.Collectors;
  * - date: Date picker
  * - select: ComboBox with predefined options
  * - checkbox: Boolean checkbox
+ * - file: File upload with configurable max files and accepted types
  * - enfant: ComboBox populated with children of the selected agent
  * - conjoint: ComboBox populated with spouses of the selected agent
  * 
@@ -61,6 +69,59 @@ public class FormRenderer {
 
     public static Component createForm(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit) {
         return createForm(schema, onSubmit, null, null, null);
+    }
+
+    // Helper class to return both form and currentValues
+    public static class FormWithValues {
+        public final Component form;
+        public final Map<String, Object> currentValues;
+        
+        public FormWithValues(Component form, Map<String, Object> currentValues) {
+            this.form = form;
+            this.currentValues = currentValues;
+        }
+    }
+    
+    public static FormWithValues createFormWithValues(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit, 
+                                                     AdhAgent selectedAgent, AdhEnfantService enfantService, AdhConjointService conjointService) {
+        VerticalLayout container = new VerticalLayout();
+        container.setPadding(false);
+        container.setSpacing(true);
+
+        if (schema.getTitle() != null) {
+            container.add(new H3(schema.getTitle()));
+        }
+
+        FormLayout formLayout = new FormLayout();
+        formLayout.setWidthFull();
+
+        Map<String, Component> fieldComponents = new HashMap<>();
+        Map<String, Object> currentValues = new HashMap<>();
+
+        List<FormField> fields = new ArrayList<>(schema.getFields());
+        fields.sort(Comparator
+                .comparing((FormField f) -> f.getOrder() == null ? Integer.MAX_VALUE : f.getOrder())
+                .thenComparing(FormField::getName, Comparator.nullsLast(String::compareTo)));
+        for (FormField field : fields) {
+            Component comp = createFieldComponent(field, currentValues, () -> applyConditions(schema, fieldComponents, currentValues), selectedAgent, enfantService, conjointService);
+            fieldComponents.put(field.getName(), comp);
+            formLayout.add(comp);
+        }
+
+        container.add(formLayout);
+
+        // Apply initial visibility based on conditions
+        applyConditions(schema, fieldComponents, currentValues);
+
+        if (onSubmit != null) {
+            Button submit = new Button("Soumettre", e -> {
+                Map<String, Object> answers = collectAnswers(schema, fieldComponents, currentValues);
+                onSubmit.accept(answers);
+            });
+            container.add(submit);
+        }
+
+        return new FormWithValues(container, currentValues);
     }
 
     public static Component createForm(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit, 
@@ -96,7 +157,7 @@ public class FormRenderer {
 
         if (onSubmit != null) {
             Button submit = new Button("Soumettre", e -> {
-                Map<String, Object> answers = collectAnswers(schema, fieldComponents);
+                Map<String, Object> answers = collectAnswers(schema, fieldComponents, currentValues);
                 onSubmit.accept(answers);
             });
             container.add(submit);
@@ -214,6 +275,9 @@ public class FormRenderer {
                 ta.addValueChangeListener(e -> { currentValues.put(field.getName(), e.getValue()); onChange.run(); });
                 return ta;
             }
+            case "file": {
+                return createFileUploadComponent(field, currentValues, onChange);
+            }
             case "text":
             default: {
                 TextField tf = new TextField(field.getLabel());
@@ -256,7 +320,12 @@ public class FormRenderer {
         return String.valueOf(o);
     }
 
-    private static Map<String, Object> collectAnswers(FormSchema schema, Map<String, Component> comps) {
+    // Legacy method for backward compatibility
+    public static Map<String, Object> collectAnswers(FormSchema schema, Map<String, Component> comps) {
+        return collectAnswers(schema, comps, new HashMap<>());
+    }
+    
+    public static Map<String, Object> collectAnswers(FormSchema schema, Map<String, Component> comps, Map<String, Object> currentValues) {
         Map<String, Object> ans = new LinkedHashMap<>();
         for (FormField f : schema.getFields()) {
             Component c = comps.get(f.getName());
@@ -303,6 +372,13 @@ public class FormRenderer {
                 case "textarea":
                     ans.put(f.getName(), ((TextArea) c).getValue());
                     break;
+                case "file":
+                    // File data is already stored in currentValues during upload
+                    // We need to extract it from the component's current values
+                    if (currentValues.containsKey(f.getName())) {
+                        ans.put(f.getName(), currentValues.get(f.getName()));
+                    }
+                    break;
                 case "text":
                 default:
                     ans.put(f.getName(), ((TextField) c).getValue());
@@ -327,5 +403,181 @@ public class FormRenderer {
         });
         wrapper.add(form, output);
         return wrapper;
+    }
+    
+    private static Component createFileUploadComponent(FormField field, Map<String, Object> currentValues, Runnable onChange) {
+        VerticalLayout container = new VerticalLayout();
+        container.setPadding(false);
+        container.setSpacing(true);
+        
+        // Label with required indicator
+        Span label = new Span(field.getLabel());
+        if (Boolean.TRUE.equals(field.getRequired())) {
+            label.getStyle().set("font-weight", "bold");
+            Span required = new Span(" *");
+            required.getStyle().set("color", "var(--lumo-error-text-color)");
+            label.add(required);
+        }
+        container.add(label);
+        
+        // File storage for this field
+        List<Map<String, Object>> uploadedFiles = new ArrayList<>();
+        currentValues.put(field.getName(), uploadedFiles);
+        
+        // Configuration
+        int maxFiles = field.getMaxFiles() != null ? field.getMaxFiles() : 3;
+        String acceptedTypes = field.getAcceptedFileTypes() != null ? field.getAcceptedFileTypes() : ".pdf,.doc,.docx,.jpg,.jpeg,.png";
+        
+        // Files list display
+        Div filesDisplay = new Div();
+        filesDisplay.getStyle().set("margin-bottom", "10px");
+        updateFilesDisplay(filesDisplay, uploadedFiles);
+        container.add(filesDisplay);
+        
+        // Upload component
+        MemoryBuffer buffer = new MemoryBuffer();
+        Upload upload = new Upload(buffer);
+        
+        // Configure accepted file types
+        String[] types = acceptedTypes.split(",");
+        for (int i = 0; i < types.length; i++) {
+            types[i] = types[i].trim();
+        }
+        upload.setAcceptedFileTypes(types);
+        upload.setMaxFiles(1); // Process one file at a time
+        upload.setMaxFileSize(10 * 1024 * 1024); // 10MB max
+        
+        // Add basic styling and text
+        upload.setUploadButton(new Button("Choisir fichier"));
+        upload.setDropAllowed(true);
+        
+        System.out.println("🔧 Upload component configured:");
+        System.out.println("  - Field name: " + field.getName());
+        System.out.println("  - Max files: " + maxFiles);
+        System.out.println("  - Accepted types: " + String.join(", ", types));
+        System.out.println("  - Upload files list initialized: " + uploadedFiles.size());
+        
+        // Add all event listeners for comprehensive debugging
+        upload.addStartedListener(event -> {
+            System.out.println("🚀 Upload started: " + event.getFileName() + " (" + event.getContentLength() + " bytes)");
+        });
+        
+        upload.addProgressListener(event -> {
+            System.out.println("📊 Upload progress: " + event.getFileName() + " - " + event.getReadBytes() + "/" + event.getContentLength());
+        });
+        
+        upload.addFinishedListener(event -> {
+            System.out.println("🏁 Upload finished: " + event.getFileName());
+        });
+        
+        // Info text
+        Span info = new Span(String.format("Fichiers acceptés: %s | Taille max: 10MB | Limite: %d fichier(s)", 
+                                           acceptedTypes, maxFiles));
+        info.getStyle().set("font-size", "12px")
+                      .set("color", "var(--lumo-secondary-text-color)");
+        container.add(info);
+        
+        upload.addSucceededListener(event -> {
+            System.out.println("📤 Upload succeeded: " + event.getFileName());
+            
+            if (uploadedFiles.size() >= maxFiles) {
+                System.out.println("⚠️ Max files reached, ignoring upload");
+                return;
+            }
+            
+            try (InputStream inputStream = buffer.getInputStream()) {
+                byte[] fileBytes = inputStream.readAllBytes();
+                String base64Content = Base64.getEncoder().encodeToString(fileBytes);
+                
+                Map<String, Object> fileInfo = new LinkedHashMap<>();
+                fileInfo.put("filename", event.getFileName());
+                fileInfo.put("contentType", event.getMIMEType());
+                fileInfo.put("size", fileBytes.length);
+                fileInfo.put("base64Content", base64Content);
+                
+                uploadedFiles.add(fileInfo);
+                System.out.println("✅ File added to list: " + event.getFileName() + " (" + fileBytes.length + " bytes)");
+                
+                updateFilesDisplay(filesDisplay, uploadedFiles);
+                
+                // Update current values immediately
+                currentValues.put(field.getName(), uploadedFiles);
+                System.out.println("📊 Updated currentValues for field: " + field.getName() + " with " + uploadedFiles.size() + " files");
+                
+                // Disable upload if max reached
+                if (uploadedFiles.size() >= maxFiles) {
+                    upload.setVisible(false);
+                    Span maxReachedMsg = new Span("Nombre maximum de fichiers atteint (" + maxFiles + ")");
+                    maxReachedMsg.getStyle().set("color", "var(--lumo-secondary-text-color)")
+                                           .set("font-size", "12px");
+                    container.add(maxReachedMsg);
+                }
+                
+                onChange.run();
+                
+            } catch (Exception e) {
+                System.err.println("❌ Erreur lors du téléchargement du fichier: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
+        
+        upload.addFailedListener(event -> {
+            System.err.println("❌ Upload failed: " + event.getFileName() + " - " + event.getReason().getMessage());
+        });
+        
+        upload.addFileRejectedListener(event -> {
+            System.err.println("❌ File rejected: " + event.getErrorMessage());
+        });
+        
+        container.add(upload);
+        
+        return container;
+    }
+    
+    private static void updateFilesDisplay(Div container, List<Map<String, Object>> files) {
+        container.removeAll();
+        
+        for (int i = 0; i < files.size(); i++) {
+            Map<String, Object> file = files.get(i);
+            final int index = i;
+            
+            Div fileItem = new Div();
+            fileItem.getStyle().set("display", "flex")
+                              .set("align-items", "center")
+                              .set("justify-content", "space-between")
+                              .set("padding", "8px")
+                              .set("margin-bottom", "4px")
+                              .set("background-color", "var(--lumo-contrast-5pct)")
+                              .set("border-radius", "var(--lumo-border-radius)");
+            
+            Div fileInfo = new Div();
+            fileInfo.add(new Span(file.get("filename").toString()));
+            
+            long size = ((Number) file.get("size")).longValue();
+            String sizeText = formatFileSize(size);
+            Span sizeSpan = new Span(" (" + sizeText + ")");
+            sizeSpan.getStyle().set("color", "var(--lumo-secondary-text-color)")
+                               .set("font-size", "12px");
+            fileInfo.add(sizeSpan);
+            
+            Button removeBtn = new Button(VaadinIcon.TRASH.create());
+            removeBtn.addThemeVariants(com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL,
+                                     com.vaadin.flow.component.button.ButtonVariant.LUMO_TERTIARY,
+                                     com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR);
+            removeBtn.addClickListener(e -> {
+                files.remove(index);
+                System.out.println("🗑️ File removed, remaining: " + files.size());
+                updateFilesDisplay(container, files);
+            });
+            
+            fileItem.add(fileInfo, removeBtn);
+            container.add(fileItem);
+        }
+    }
+    
+    private static String formatFileSize(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
+        return String.format("%.1f MB", bytes / (1024.0 * 1024.0));
     }
 }

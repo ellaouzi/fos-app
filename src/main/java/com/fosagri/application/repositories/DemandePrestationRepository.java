@@ -36,4 +36,22 @@ public interface DemandePrestationRepository extends JpaRepository<DemandePresta
     
     @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.agent = :agent AND d.prestation = :prestation AND d.statut IN ('SOUMISE', 'EN_COURS', 'ACCEPTEE')")
     long countActiveDemandsByAgentAndPrestation(@Param("agent") AdhAgent agent, @Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation")
+    long countTotalDemandes(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation AND d.statut = 'SOUMISE'")
+    long countSoumises(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation AND d.statut = 'EN_COURS'")
+    long countEnCours(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation AND d.statut = 'ACCEPTEE'")
+    long countAcceptees(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation AND d.statut = 'REFUSEE'")
+    long countRefusees(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation AND d.statut = 'TERMINEE'")
+    long countTerminees(@Param("prestation") PrestationRef prestation);
 }

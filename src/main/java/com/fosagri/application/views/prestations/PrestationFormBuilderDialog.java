@@ -164,6 +164,14 @@ public class PrestationFormBuilderDialog extends Dialog {
         grid.addColumn(FormField::getType).setHeader("Type").setAutoWidth(true);
         grid.addColumn(ff -> ff.getRequired() != null && ff.getRequired() ? "Oui" : "Non")
             .setHeader("Requis");
+        grid.addColumn(ff -> {
+            if ("file".equals(ff.getType())) {
+                return String.format("Max: %d, Types: %s", 
+                    ff.getMaxFiles() != null ? ff.getMaxFiles() : 3,
+                    ff.getAcceptedFileTypes() != null ? ff.getAcceptedFileTypes() : "Tous");
+            }
+            return "";
+        }).setHeader("Config Fichiers").setAutoWidth(true);
         
         grid.addComponentColumn(ff -> new Button("Modifier", e -> openFieldDialog(ff)))
             .setWidth("120px");

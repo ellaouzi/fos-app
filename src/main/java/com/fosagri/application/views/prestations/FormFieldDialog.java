@@ -29,6 +29,8 @@ public class FormFieldDialog extends Dialog {
     private TextField options;
     private TextField condition;
     private IntegerField order;
+    private IntegerField maxFiles;
+    private TextField acceptedFileTypes;
     
     public FormFieldDialog(FormField existing) {
         setHeaderTitle(existing == null ? "Nouveau champ" : "Modifier le champ");
@@ -54,7 +56,7 @@ public class FormFieldDialog extends Dialog {
         
         type = new Select<>();
         type.setLabel("Type de champ");
-        type.setItems("text", "textarea", "number", "date", "select", "checkbox", "enfant", "conjoint");
+        type.setItems("text", "textarea", "number", "date", "select", "checkbox", "file", "enfant", "conjoint");
         type.setRequiredIndicatorVisible(true);
         
         placeholder = new TextField("Placeholder");
@@ -73,6 +75,35 @@ public class FormFieldDialog extends Dialog {
         order = new IntegerField("Ordre d'affichage");
         order.setValue(1);
         
+        maxFiles = new IntegerField("Nombre max de fichiers");
+        maxFiles.setHelperText("Pour les champs de type 'file'. Nombre maximum de fichiers à télécharger");
+        maxFiles.setValue(3);
+        maxFiles.setMin(1);
+        maxFiles.setMax(10);
+        
+        acceptedFileTypes = new TextField("Types de fichiers acceptés");
+        acceptedFileTypes.setHelperText("Pour les champs de type 'file'. Ex: .pdf,.doc,.docx,.jpg,.png");
+        acceptedFileTypes.setValue(".pdf,.doc,.docx,.jpg,.jpeg,.png");
+        
+        // Show/hide file-specific fields based on type selection
+        type.addValueChangeListener(e -> {
+            boolean isFileType = "file".equals(e.getValue());
+            boolean isSelectType = "select".equals(e.getValue());
+            maxFiles.setVisible(isFileType);
+            acceptedFileTypes.setVisible(isFileType);
+            options.setVisible(isSelectType);
+        });
+        
+        // Initialize visibility after binding
+        binder.addStatusChangeListener(e -> {
+            String currentType = type.getValue();
+            boolean isFileType = "file".equals(currentType);
+            boolean isSelectType = "select".equals(currentType);
+            maxFiles.setVisible(isFileType);
+            acceptedFileTypes.setVisible(isFileType);
+            options.setVisible(isSelectType);
+        });
+        
         // Binding
         binder.bind(name, FieldFormModel::getName, FieldFormModel::setName);
         binder.bind(label, FieldFormModel::getLabel, FieldFormModel::setLabel);
@@ -82,8 +113,10 @@ public class FormFieldDialog extends Dialog {
         binder.bind(options, FieldFormModel::getOptions, FieldFormModel::setOptions);
         binder.bind(condition, FieldFormModel::getCond, FieldFormModel::setCond);
         binder.bind(order, FieldFormModel::getOrder, FieldFormModel::setOrder);
+        binder.bind(maxFiles, FieldFormModel::getMaxFiles, FieldFormModel::setMaxFiles);
+        binder.bind(acceptedFileTypes, FieldFormModel::getAcceptedFileTypes, FieldFormModel::setAcceptedFileTypes);
         
-        formLayout.add(name, label, type, placeholder, required, options, condition, order);
+        formLayout.add(name, label, type, placeholder, required, options, condition, order, maxFiles, acceptedFileTypes);
         add(formLayout);
     }
     
@@ -133,6 +166,8 @@ public class FormFieldDialog extends Dialog {
         private String options;
         private String cond;
         private Integer order;
+        private Integer maxFiles;
+        private String acceptedFileTypes;
         
         public static FieldFormModel from(FormField ff) {
             FieldFormModel m = new FieldFormModel();
@@ -156,6 +191,8 @@ public class FormFieldDialog extends Dialog {
                     Objects.toString(c.getValue(), ""));
             }
             m.order = ff.getOrder();
+            m.maxFiles = ff.getMaxFiles();
+            m.acceptedFileTypes = ff.getAcceptedFileTypes();
             return m;
         }
         
@@ -188,6 +225,8 @@ public class FormFieldDialog extends Dialog {
             }
             
             f.setOrder(order);
+            f.setMaxFiles(maxFiles);
+            f.setAcceptedFileTypes(acceptedFileTypes);
             return f;
         }
         
@@ -215,5 +254,11 @@ public class FormFieldDialog extends Dialog {
         
         public Integer getOrder() { return order; }
         public void setOrder(Integer order) { this.order = order; }
+        
+        public Integer getMaxFiles() { return maxFiles; }
+        public void setMaxFiles(Integer maxFiles) { this.maxFiles = maxFiles; }
+        
+        public String getAcceptedFileTypes() { return acceptedFileTypes; }
+        public void setAcceptedFileTypes(String acceptedFileTypes) { this.acceptedFileTypes = acceptedFileTypes; }
     }
 }

@@ -7,12 +7,14 @@ import java.util.List;
 public class FormField {
     private String name;
     private String label;
-    private String type; // text, number, date, select, checkbox
+    private String type; // text, number, date, select, checkbox, file
     private String placeholder;
     private Boolean required;
     private List<FieldOption> options; // for select
     private Condition condition; // simple show/hide condition
     private Integer order; // display order
+    private Integer maxFiles; // maximum number of files for file type
+    private String acceptedFileTypes; // accepted file types (e.g., ".pdf,.doc,.docx")
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -37,4 +39,10 @@ public class FormField {
 
     public Integer getOrder() { return order; }
     public void setOrder(Integer order) { this.order = order; }
+
+    public Integer getMaxFiles() { return maxFiles; }
+    public void setMaxFiles(Integer maxFiles) { this.maxFiles = maxFiles; }
+
+    public String getAcceptedFileTypes() { return acceptedFileTypes; }
+    public void setAcceptedFileTypes(String acceptedFileTypes) { this.acceptedFileTypes = acceptedFileTypes; }
 }
