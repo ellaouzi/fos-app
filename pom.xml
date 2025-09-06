@@ -94,7 +94,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.32</version>
+            <scope>provided</scope>
         </dependency>
         
         <!-- Jakarta Persistence API (included in spring-boot-starter-data-jpa for Spring Boot 3.x) -->
@@ -159,6 +160,22 @@
                     </execution>
                 </executions>
             </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>1.18.32</version>
+                    </path>
+                </annotationProcessorPaths>
+                <parameters>true</parameters>
+                <release>${java.version}</release>
+            </configuration>
+        </plugin>
         </plugins>
     </build>
 

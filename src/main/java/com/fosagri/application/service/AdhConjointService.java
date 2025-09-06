@@ -28,6 +28,10 @@ public class AdhConjointService {
     public List<AdhConjoint> findByAgent(AdhAgent agent) {
         return adhConjointRepository.findByAdhAgent(agent);
     }
+    
+    public List<AdhConjoint> findBasicInfoByAgent(AdhAgent agent) {
+        return adhConjointRepository.findBasicInfoByAdhAgent(agent);
+    }
 
     public List<AdhConjoint> findByCodeAgent(String codAg) {
         return adhConjointRepository.findByCodAg(codAg);

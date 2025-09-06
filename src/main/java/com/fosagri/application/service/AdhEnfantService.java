@@ -28,6 +28,10 @@ public class AdhEnfantService {
     public List<AdhEnfant> findByAgent(AdhAgent agent) {
         return adhEnfantRepository.findByAdhAgent(agent);
     }
+    
+    public List<AdhEnfant> findBasicInfoByAgent(AdhAgent agent) {
+        return adhEnfantRepository.findBasicInfoByAdhAgent(agent);
+    }
 
     public List<AdhEnfant> findByCodeAgent(String codAg) {
         return adhEnfantRepository.findByCodAg(codAg);

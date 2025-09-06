@@ -16,8 +16,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  *
  */
 @SpringBootApplication
-@EntityScan("com.fosagri.application.model")
-@EnableJpaRepositories("com.fosagri.application.repository")
+@EntityScan({"com.fosagri.application.model", "com.fosagri.application.entities"})
+@EnableJpaRepositories({"com.fosagri.application.repository", "com.fosagri.application.repositories"})
 @PageTitle("FOS AGRI Data")
 @Theme(value = "data-app")
 public class Application implements AppShellConfigurator {

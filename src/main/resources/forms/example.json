@@ -1,0 +1,16 @@
+{
+  "key": "example",
+  "title": "Formulaire Exemple",
+  "fields": [
+    { "name": "fullname", "label": "Nom complet", "type": "text", "placeholder": "Entrez votre nom", "required": true },
+    { "name": "age", "label": "Âge", "type": "number", "required": true },
+    { "name": "isStudent", "label": "Êtes-vous étudiant?", "type": "checkbox" },
+    { "name": "school", "label": "École", "type": "text", "condition": { "field": "isStudent", "operator": "eq", "value": "true" } },
+    { "name": "birthDate", "label": "Date de naissance", "type": "date" },
+    { "name": "country", "label": "Pays", "type": "select", "options": [
+      { "value": "CI", "label": "Côte d'Ivoire" },
+      { "value": "SN", "label": "Sénégal" },
+      { "value": "ML", "label": "Mali" }
+    ] }
+  ]
+}
