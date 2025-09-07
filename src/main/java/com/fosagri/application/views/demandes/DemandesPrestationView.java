@@ -8,6 +8,7 @@ import com.fosagri.application.service.AdhEnfantService;
 import com.fosagri.application.service.AdhConjointService;
 import com.fosagri.application.services.DemandePrestationService;
 import com.fosagri.application.services.PrestationRefService;
+import com.fosagri.application.services.PdfReportService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -40,6 +41,7 @@ public class DemandesPrestationView extends VerticalLayout {
     private final AdhAgentService agentService;
     private final AdhEnfantService enfantService;
     private final AdhConjointService conjointService;
+    private final PdfReportService pdfReportService;
     
     private final Grid<DemandePrestation> grid = new Grid<>(DemandePrestation.class, false);
     private final ListDataProvider<DemandePrestation> dataProvider;
@@ -50,12 +52,14 @@ public class DemandesPrestationView extends VerticalLayout {
                                   PrestationRefService prestationService,
                                   AdhAgentService agentService,
                                   AdhEnfantService enfantService,
-                                  AdhConjointService conjointService) {
+                                  AdhConjointService conjointService,
+                                  PdfReportService pdfReportService) {
         this.demandeService = demandeService;
         this.prestationService = prestationService;
         this.agentService = agentService;
         this.enfantService = enfantService;
         this.conjointService = conjointService;
+        this.pdfReportService = pdfReportService;
         this.dataProvider = new ListDataProvider<>(new ArrayList<>());
         
         setSizeFull();
@@ -114,13 +118,18 @@ public class DemandesPrestationView extends VerticalLayout {
             editBtn.addClickListener(e -> traiterDemande(demande));
             editBtn.setEnabled("SOUMISE".equals(demande.getStatut()) || "EN_COURS".equals(demande.getStatut()));
             
+            Button pdfBtn = new Button("PDF", VaadinIcon.FILE_TEXT_O.create());
+            pdfBtn.addClickListener(e -> generatePdfReport(demande));
+            pdfBtn.getStyle().set("color", "green");
+            
             Button deleteBtn = new Button("Supprimer", VaadinIcon.TRASH.create());
             deleteBtn.addClickListener(e -> confirmDelete(demande));
             deleteBtn.getStyle().set("color", "red");
             
-            actions.add(viewBtn, editBtn, deleteBtn);
+            actions.add(viewBtn, editBtn, pdfBtn, deleteBtn);
             return actions;
-        }).setHeader("Actions").setWidth("280px").setFlexGrow(0);
+        }).setHeader("Actions").setWidth("350px").setFlexGrow(0);
+grid.setColumnReorderingAllowed(true);
     }
     
     private void configureFilters() {
@@ -244,6 +253,20 @@ public class DemandesPrestationView extends VerticalLayout {
             Notification.show("Demande supprimée avec succès");
         } catch (Exception e) {
             Notification.show("Erreur lors de la suppression: " + e.getMessage());
+        }
+    }
+    
+    private void generatePdfReport(DemandePrestation demande) {
+        try {
+            // Use the REST API endpoint for PDF generation
+            String pdfUrl = String.format("/api/pdf/demande/%d", demande.getId());
+            
+            getUI().ifPresent(ui -> ui.getPage().open(pdfUrl, "_blank"));
+            
+            Notification.show("Rapport PDF généré avec succès");
+        } catch (Exception e) {
+            Notification.show("Erreur lors de la génération du PDF: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
