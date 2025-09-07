@@ -2,6 +2,8 @@ package com.fosagri.application.views.dashboard;
 
 import com.fosagri.application.service.AdhAgentService;
 import com.fosagri.application.service.UtilisateurService;
+import com.fosagri.application.services.DemandePrestationService;
+import com.fosagri.application.services.PrestationRefService;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
@@ -25,10 +27,19 @@ public class DashboardView extends VerticalLayout {
     
     @Autowired
     private UtilisateurService utilisateurService;
+    
+    @Autowired
+    private DemandePrestationService demandeService;
+    
+    @Autowired
+    private PrestationRefService prestationService;
 
-    public DashboardView(AdhAgentService agentService, UtilisateurService utilisateurService) {
+    public DashboardView(AdhAgentService agentService, UtilisateurService utilisateurService,
+                        DemandePrestationService demandeService, PrestationRefService prestationService) {
         this.agentService = agentService;
         this.utilisateurService = utilisateurService;
+        this.demandeService = demandeService;
+        this.prestationService = prestationService;
         
         addClassName("dashboard-view");
         setSizeFull();
@@ -48,13 +59,15 @@ public class DashboardView extends VerticalLayout {
     private void createStatistics() {
         long agentCount = agentService.count();
         long userCount = utilisateurService.count();
+        long prestationCount = prestationService.count();
+        long demandeCount = demandeService.count();
 
         Div agentCard = createStatCard("Agents", String.valueOf(agentCount), VaadinIcon.USERS);
         Div userCard = createStatCard("Utilisateurs", String.valueOf(userCount), VaadinIcon.USER);
-        Div documentsCard = createStatCard("Documents", "0", VaadinIcon.FILE_TEXT);
-        Div resultatsCard = createStatCard("Opérations", "0", VaadinIcon.TASKS);
+        Div prestationCard = createStatCard("Prestations", String.valueOf(prestationCount), VaadinIcon.CLIPBOARD);
+        Div demandeCard = createStatCard("Demandes", String.valueOf(demandeCount), VaadinIcon.FILE_TEXT);
 
-        HorizontalLayout statsLayout = new HorizontalLayout(agentCard, userCard, documentsCard, resultatsCard);
+        HorizontalLayout statsLayout = new HorizontalLayout(agentCard, userCard, prestationCard, demandeCard);
         statsLayout.setWidthFull();
         statsLayout.setSpacing(true);
         
@@ -104,7 +117,7 @@ public class DashboardView extends VerticalLayout {
         
         Paragraph welcomeText = new Paragraph(
             "Cette application vous permet de gérer les données des agents agricoles, " +
-            "leurs familles, les documents associés et les opérations effectuées. " +
+            "leurs familles, les documents associés, les prestations et les demandes. " +
             "Utilisez le menu de navigation pour accéder aux différentes fonctionnalités."
         );
 

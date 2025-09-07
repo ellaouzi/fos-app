@@ -30,10 +30,7 @@ public class DemandePrestationService {
         return repository.findAll();
     }
     
-    public Optional<DemandePrestation> findById(Long id) {
-        return repository.findById(id);
-    }
-    
+
     public DemandePrestation save(DemandePrestation demande) {
         return repository.save(demande);
     }
@@ -188,7 +185,7 @@ public class DemandePrestationService {
     }
     
     public void updateStatut(Long demandeId, String nouveauStatut, String commentaire, Long traitePar) {
-        Optional<DemandePrestation> demandeOpt = findById(demandeId);
+        Optional<DemandePrestation> demandeOpt = Optional.ofNullable(findById(demandeId));
         if (demandeOpt.isPresent()) {
             DemandePrestation demande = demandeOpt.get();
             demande.setStatut(nouveauStatut);
@@ -212,7 +209,7 @@ public class DemandePrestationService {
     }
     
     public long countByStatut(String statut) {
-        return findByStatut(statut).size();
+        return repository.countByStatutOnly(statut);
     }
     
     public long countTotalDemandes(PrestationRef prestation) {
@@ -237,5 +234,102 @@ public class DemandePrestationService {
     
     public long countTerminees(PrestationRef prestation) {
         return repository.countTerminees(prestation);
+    }
+    
+    public List<com.fosagri.application.dto.DemandeViewDto> findByPrestationSafe(PrestationRef prestation) {
+        List<Object[]> results = repository.findByPrestationWithoutBlobs(prestation);
+        return results.stream().map(row -> {
+            // Create minimal agent object
+            com.fosagri.application.model.AdhAgent agent = new com.fosagri.application.model.AdhAgent();
+            agent.setAdhAgentId((Integer) row[4]);
+            agent.setNOM_AG((String) row[5]);
+            agent.setPR_AG((String) row[6]);
+            
+            return new com.fosagri.application.dto.DemandeViewDto(
+                (Long) row[0],           // id
+                (String) row[1],         // statut
+                (Date) row[2],           // dateDemande
+                (Date) row[3],           // dateTraitement
+                null,                    // commentaire - excluded to avoid BLOB issues
+                agent,                   // reconstructed agent
+                prestation              // prestation (passed as parameter)
+            );
+        }).collect(java.util.stream.Collectors.toList());
+    }
+    
+    public DemandePrestation findById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+    
+    public java.util.Set<String> extractCommonJsonKeys(PrestationRef prestation) {
+        List<Object[]> results = repository.findByPrestationWithJsonData(prestation);
+        java.util.Set<String> commonKeys = new java.util.HashSet<>();
+        
+        ObjectMapper mapper = new ObjectMapper();
+        for (Object[] row : results) {
+            String reponseJson = (String) row[8]; // reponseJson is at index 8
+            if (reponseJson != null && !reponseJson.trim().isEmpty()) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> jsonData = mapper.readValue(reponseJson, Map.class);
+                    commonKeys.addAll(jsonData.keySet());
+                } catch (Exception e) {
+                    // Ignore invalid JSON
+                }
+            }
+        }
+        
+        return commonKeys;
+    }
+    
+    public Object extractJsonValue(String reponseJson, String key) {
+        if (reponseJson == null || reponseJson.trim().isEmpty()) {
+            return null;
+        }
+        
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> jsonData = mapper.readValue(reponseJson, Map.class);
+            return jsonData.get(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    public List<com.fosagri.application.dto.EnhancedDemandeViewDto> findByPrestationWithJsonFields(PrestationRef prestation) {
+        List<Object[]> results = repository.findByPrestationWithJsonData(prestation);
+        java.util.Set<String> commonKeys = extractCommonJsonKeys(prestation);
+        
+        return results.stream().map(row -> {
+            // Create minimal agent object
+            com.fosagri.application.model.AdhAgent agent = new com.fosagri.application.model.AdhAgent();
+            agent.setAdhAgentId((Integer) row[4]);
+            agent.setNOM_AG((String) row[5]);
+            agent.setPR_AG((String) row[6]);
+            
+            // Extract JSON fields
+            String reponseJson = (String) row[8];
+            Map<String, Object> jsonFields = new java.util.HashMap<>();
+            if (reponseJson != null && !reponseJson.trim().isEmpty()) {
+                for (String key : commonKeys) {
+                    Object value = extractJsonValue(reponseJson, key);
+                    if (value != null) {
+                        jsonFields.put(key, value);
+                    }
+                }
+            }
+            
+            return new com.fosagri.application.dto.EnhancedDemandeViewDto(
+                (Long) row[0],           // id
+                (String) row[1],         // statut
+                (Date) row[2],           // dateDemande
+                (Date) row[3],           // dateTraitement
+                null,                    // commentaire - excluded to avoid BLOB issues
+                agent,                   // reconstructed agent
+                prestation,             // prestation (passed as parameter)
+                jsonFields              // extracted JSON fields
+            );
+        }).collect(java.util.stream.Collectors.toList());
     }
 }

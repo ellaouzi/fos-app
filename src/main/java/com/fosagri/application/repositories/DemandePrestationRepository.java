@@ -54,4 +54,13 @@ public interface DemandePrestationRepository extends JpaRepository<DemandePresta
     
     @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.prestation = :prestation AND d.statut = 'TERMINEE'")
     long countTerminees(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.statut = :statut")
+    long countByStatutOnly(@Param("statut") String statut);
+    
+    @Query("SELECT d.id, d.statut, d.dateDemande, d.dateTraitement, d.agent.adhAgentId, d.agent.NOM_AG, d.agent.PR_AG, d.prestation.id FROM DemandePrestation d WHERE d.prestation = :prestation")
+    List<Object[]> findByPrestationWithoutBlobs(@Param("prestation") PrestationRef prestation);
+    
+    @Query("SELECT d.id, d.statut, d.dateDemande, d.dateTraitement, d.agent.adhAgentId, d.agent.NOM_AG, d.agent.PR_AG, d.prestation.id, d.reponseJson FROM DemandePrestation d WHERE d.prestation = :prestation")
+    List<Object[]> findByPrestationWithJsonData(@Param("prestation") PrestationRef prestation);
 }

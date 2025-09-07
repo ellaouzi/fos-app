@@ -101,9 +101,14 @@ public class PrestationRefView extends VerticalLayout {
             formBtn.addClickListener(e -> openFormBuilder(prestationRef));
             formBtn.getElement().setProperty("title", "Formulaire");
             
-            actions.add(editBtn, deleteBtn, formBtn);
+            Button demandesBtn = new Button(VaadinIcon.LIST.create());
+            demandesBtn.addThemeVariants(com.vaadin.flow.component.button.ButtonVariant.LUMO_CONTRAST);
+            demandesBtn.addClickListener(e -> openDemandesDialog(prestationRef));
+            demandesBtn.getElement().setProperty("title", "Voir les demandes");
+            
+            actions.add(editBtn, deleteBtn, formBtn, demandesBtn);
             return actions;
-        }).setHeader("Actions").setWidth("150px").setFlexGrow(0);
+        }).setHeader("Actions").setWidth("200px").setFlexGrow(0);
     }
     
     private void configureFilter() {
@@ -435,5 +440,10 @@ public class PrestationRefView extends VerticalLayout {
         badge.getStyle().set("color", "#721c24");
         badge.getElement().setProperty("title", "Erreur lors du chargement des demandes");
         return badge;
+    }
+    
+    private void openDemandesDialog(PrestationRef prestationRef) {
+        PrestationDemandesDialog dialog = new PrestationDemandesDialog(prestationRef, demandePrestationService);
+        dialog.open();
     }
 }
