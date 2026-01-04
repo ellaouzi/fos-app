@@ -13,18 +13,22 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.CallbackDataProvider;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 import java.text.SimpleDateFormat;
 
 @PageTitle("Gestion des Utilisateurs")
 @Route("users")
-@Menu(order = 2, icon = LineAwesomeIconUrl.USER_SOLID)
+@Menu(order = 10, icon = LineAwesomeIconUrl.USER_SOLID)
+@jakarta.annotation.security.RolesAllowed("ADMIN")
 public class UserView extends VerticalLayout {
 
     @Autowired
@@ -32,18 +36,20 @@ public class UserView extends VerticalLayout {
 
     private Grid<Utilisateur> grid;
     private TextField searchField;
+    private String currentFilter = "";
+    private CallbackDataProvider<Utilisateur, Void> dataProvider;
 
     public UserView(UtilisateurService utilisateurService) {
         this.utilisateurService = utilisateurService;
-        
+
         addClassName("user-view");
         setSizeFull();
-        
+
         createHeader();
         createSearchBar();
         createGrid();
-        
-        updateGrid();
+
+        configureDataProvider();
     }
 
     private void createHeader() {
@@ -57,7 +63,10 @@ public class UserView extends VerticalLayout {
         searchField.setPlaceholder("Rechercher par nom d'utilisateur...");
         searchField.setPrefixComponent(VaadinIcon.SEARCH.create());
         searchField.setValueChangeMode(ValueChangeMode.LAZY);
-        searchField.addValueChangeListener(e -> updateGrid());
+        searchField.addValueChangeListener(e -> {
+            currentFilter = e.getValue();
+            updateGrid();
+        });
         searchField.setWidth("300px");
 
         Button addButton = new Button("Nouvel Utilisateur", VaadinIcon.PLUS.create());
@@ -113,8 +122,32 @@ public class UserView extends VerticalLayout {
         add(grid);
     }
 
+    private void configureDataProvider() {
+        dataProvider = DataProvider.fromCallbacks(
+            query -> {
+                int offset = query.getOffset();
+                int limit = query.getLimit();
+                PageRequest pageRequest = PageRequest.of(offset / limit, limit);
+
+                if (currentFilter == null || currentFilter.isEmpty()) {
+                    return utilisateurService.findAll(pageRequest).stream();
+                } else {
+                    return utilisateurService.findByUsernameContaining(currentFilter, pageRequest).stream();
+                }
+            },
+            query -> {
+                if (currentFilter == null || currentFilter.isEmpty()) {
+                    return (int) utilisateurService.count();
+                } else {
+                    return (int) utilisateurService.countByUsernameContaining(currentFilter);
+                }
+            }
+        );
+        grid.setDataProvider(dataProvider);
+    }
+
     private void updateGrid() {
-        grid.setItems(utilisateurService.findAll());
+        dataProvider.refreshAll();
     }
 
     private void openUserDialog(Utilisateur user) {

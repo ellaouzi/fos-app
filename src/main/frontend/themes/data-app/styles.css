@@ -1,29 +1,267 @@
 @import url('./main-layout.css');
-@import url('./views/credit-card-form-view.css');    html {
-      --lumo-line-height-m: 1.4;
-      --lumo-line-height-s: 1.2;
-      --lumo-line-height-xs: 1.1;
-      --lumo-font-size: 1rem;
-      --lumo-font-size-xxxl: 1.75rem;
-      --lumo-font-size-xxl: 1.375rem;
-      --lumo-font-size-xl: 1.125rem;
-      --lumo-font-size-l: 1rem;
-      --lumo-font-size-m: 0.875rem;
-      --lumo-font-size-s: 0.8125rem;
-      --lumo-font-size-xs: 0.75rem;
-      --lumo-font-size-xxs: 0.6875rem;
-      --lumo-size-xl: 3rem;
-      --lumo-size-l: 2.5rem;
-      --lumo-size-m: 2rem;
-      --lumo-size-s: 1.75rem;
-      --lumo-size-xs: 1.5rem;
-      --lumo-space-xl: 1.875rem;
-      --lumo-space-l: 1.25rem;
-      --lumo-space-m: 0.625rem;
-      --lumo-space-s: 0.3125rem;
-      --lumo-space-xs: 0.1875rem;
-      --lumo-border-radius-s: calc(var(--lumo-size-m) / 6);
-      --lumo-border-radius-m: calc(var(--lumo-size-m) / 2);
-      --lumo-border-radius-l: var(--lumo-size-m);
+@import url('./views/credit-card-form-view.css');
 
-    }
+/* Modern Admin Theme */
+:root {
+    --fos-green: #3b6b35;
+    --fos-blue: #2c5aa0;
+    --fos-gold: #d4a949;
+    --fos-gradient: linear-gradient(135deg, #3b6b35 0%, #2c5aa0 100%);
+}
+
+/* Login card hover effect */
+.login-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.4) !important;
+}
+
+/* Modern sidebar styling */
+vaadin-app-layout [slot="drawer"] {
+    background: #f8fafc;
+}
+
+vaadin-side-nav-item {
+    --vaadin-side-nav-item-padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin: 2px 0;
+    transition: all 0.2s ease;
+}
+
+vaadin-side-nav-item:hover {
+    background: rgba(59, 107, 53, 0.08);
+}
+
+vaadin-side-nav-item[active] {
+    background: rgba(59, 107, 53, 0.12);
+    font-weight: 600;
+}
+
+vaadin-side-nav-item[active]::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: var(--fos-gradient);
+    border-radius: 0 4px 4px 0;
+}
+
+/* Modern cards */
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+}
+
+/* Admin view headers */
+.admin-header {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.admin-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.admin-subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* Modern grid styling */
+vaadin-grid {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid #f1f5f9;
+}
+
+vaadin-grid::part(header-cell) {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+vaadin-grid::part(body-cell) {
+    padding: 1rem;
+}
+
+vaadin-grid::part(row):hover {
+    background: rgba(59, 107, 53, 0.04);
+}
+
+/* Modern buttons */
+vaadin-button[theme~="primary"] {
+    background: var(--fos-gradient);
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+vaadin-button[theme~="primary"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 107, 53, 0.3);
+}
+
+/* Status badges */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.status-badge.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-badge.warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-badge.info {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Tab styling */
+vaadin-tabs {
+    background: white;
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+vaadin-tab {
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+vaadin-tab[selected] {
+    background: var(--fos-gradient);
+    color: white;
+}
+
+vaadin-tab:hover:not([selected]) {
+    background: #f1f5f9;
+}
+
+/* Dialog styling */
+vaadin-dialog-overlay::part(overlay) {
+    border-radius: 16px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.2);
+}
+
+vaadin-dialog-overlay::part(header) {
+    background: var(--fos-gradient);
+    color: white;
+    padding: 1.25rem 1.5rem;
+}
+
+/* Form fields */
+vaadin-text-field,
+vaadin-text-area,
+vaadin-select,
+vaadin-combo-box,
+vaadin-date-picker {
+    --vaadin-input-field-border-radius: 10px;
+    --vaadin-input-field-background: #f8fafc;
+}
+
+vaadin-text-field:focus-within,
+vaadin-text-area:focus-within,
+vaadin-select:focus-within,
+vaadin-combo-box:focus-within,
+vaadin-date-picker:focus-within {
+    --vaadin-input-field-background: white;
+}
+
+/* Notification styling */
+vaadin-notification-card {
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+html {
+    --lumo-line-height-m: 1.4;
+    --lumo-line-height-s: 1.2;
+    --lumo-line-height-xs: 1.1;
+    --lumo-font-size: 1rem;
+    --lumo-font-size-xxxl: 1.75rem;
+    --lumo-font-size-xxl: 1.375rem;
+    --lumo-font-size-xl: 1.125rem;
+    --lumo-font-size-l: 1rem;
+    --lumo-font-size-m: 0.875rem;
+    --lumo-font-size-s: 0.8125rem;
+    --lumo-font-size-xs: 0.75rem;
+    --lumo-font-size-xxs: 0.6875rem;
+    --lumo-size-xl: 3rem;
+    --lumo-size-l: 2.5rem;
+    --lumo-size-m: 2rem;
+    --lumo-size-s: 1.75rem;
+    --lumo-size-xs: 1.5rem;
+    --lumo-space-xl: 1.875rem;
+    --lumo-space-l: 1.25rem;
+    --lumo-space-m: 0.625rem;
+    --lumo-space-s: 0.3125rem;
+    --lumo-space-xs: 0.1875rem;
+    --lumo-border-radius-s: calc(var(--lumo-size-m) / 6);
+    --lumo-border-radius-m: calc(var(--lumo-size-m) / 2);
+    --lumo-border-radius-l: var(--lumo-size-m);
+    --lumo-primary-color: #3b6b35;
+    --lumo-primary-color-50pct: rgba(59, 107, 53, 0.5);
+    --lumo-primary-text-color: #3b6b35;
+}

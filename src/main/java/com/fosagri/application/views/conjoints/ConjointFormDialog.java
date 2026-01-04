@@ -171,7 +171,7 @@ public class ConjointFormDialog extends Dialog {
         );
         
         cinImageUpload = new FileUploadComponent(
-            "Photo de la CIN (pour +18 ans)", 
+            "Photo de la CIN",
             "image/jpeg,image/png,image/gif,application/pdf", 
             10, 
             true

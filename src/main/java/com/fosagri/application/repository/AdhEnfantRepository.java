@@ -20,4 +20,6 @@ public interface AdhEnfantRepository extends JpaRepository<AdhEnfant, Integer> {
     List<AdhEnfant> findByCodAg(String codAg);
     
     List<AdhEnfant> findByValideTrue();
+
+    long countByAdhAgent(AdhAgent adhAgent);
 }

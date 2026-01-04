@@ -3,9 +3,13 @@ package com.fosagri.application.config;
 import com.fosagri.application.entities.PrestationRef;
 import com.fosagri.application.forms.FormSchema;
 import com.fosagri.application.forms.FormField;
+import com.fosagri.application.model.Authority;
+import com.fosagri.application.model.Utilisateur;
+import com.fosagri.application.repository.UtilisateurRepository;
 import com.fosagri.application.services.PrestationRefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,11 +23,70 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PrestationRefService prestationRefService;
 
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
+        // Initialize default admin user
+        initializeDefaultUsers();
+
         // Vérifier s'il y a déjà des prestations
         if (prestationRefService.count() == 0) {
             initializeSamplePrestations();
+        }
+    }
+
+    private void initializeDefaultUsers() {
+        // Only create users if the database is empty (fresh install)
+        if (utilisateurRepository.count() > 0) {
+            System.out.println("Users already exist in database, skipping default user creation.");
+            return;
+        }
+
+        try {
+            // Create admin user
+            Utilisateur admin = new Utilisateur();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setNom("Administrateur");
+            admin.setPrenom("Système");
+            admin.setEmail("admin@fosagri.ma");
+            admin.setEnabled(true);
+            admin.setCreated(new Date());
+
+            // Create authority
+            List<Authority> authorities = new ArrayList<>();
+            Authority adminRole = new Authority("admin", "ADMIN", admin);
+            authorities.add(adminRole);
+            admin.setAuthorities(authorities);
+
+            utilisateurRepository.save(admin);
+            System.out.println("Admin user created: admin / admin123");
+
+            // Create a regular user
+            Utilisateur user = new Utilisateur();
+            user.setUsername("user");
+            user.setPassword(passwordEncoder.encode("user123"));
+            user.setNom("Utilisateur");
+            user.setPrenom("Test");
+            user.setEmail("user@fosagri.ma");
+            user.setEnabled(true);
+            user.setCreated(new Date());
+
+            // Create authority
+            List<Authority> userAuthorities = new ArrayList<>();
+            Authority userRole = new Authority("user", "USER", user);
+            userAuthorities.add(userRole);
+            user.setAuthorities(userAuthorities);
+
+            utilisateurRepository.save(user);
+            System.out.println("Regular user created: user / user123");
+        } catch (Exception e) {
+            System.out.println("Default users already exist or could not be created: " + e.getMessage());
         }
     }
 

@@ -1,0 +1,928 @@
+  __  __            _                
+ |  \/  |_   _     / \   _ __  _ __  
+ | |\/| | | | |   / _ \ | '_ \| '_ \ 
+ | |  | | |_| |  / ___ \| |_) | |_) |
+ |_|  |_|\__, | /_/   \_\ .__/| .__/ 
+         |___/          |_|   |_|    
+
+2025-12-30T12:30:52.784+01:00  INFO 69889 --- [           main] com.fosagri.application.Application      : Starting Application v1.0-SNAPSHOT using Java 17.0.17 with PID 69889 (/Users/mac/Documents/dev/FOS-Agri/data-app/target/data-app-1.0-SNAPSHOT.jar started by mac in /Users/mac/Documents/dev/FOS-Agri/data-app)
+2025-12-30T12:30:52.786+01:00  INFO 69889 --- [           main] com.fosagri.application.Application      : The following 1 profile is active: "prod"
+2025-12-30T12:30:53.135+01:00  INFO 69889 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-30T12:30:53.211+01:00  INFO 69889 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 71 ms. Found 13 JPA repository interfaces.
+2025-12-30T12:30:53.612+01:00  INFO 69889 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8087 (http)
+2025-12-30T12:30:53.618+01:00  INFO 69889 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-30T12:30:53.618+01:00  INFO 69889 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-12-30T12:30:53.633+01:00  INFO 69889 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-30T12:30:53.634+01:00  INFO 69889 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 818 ms
+2025-12-30T12:30:53.725+01:00  INFO 69889 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing AtmosphereFramework
+2025-12-30T12:30:53.972+01:00  INFO 69889 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-30T12:30:54.002+01:00  INFO 69889 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-12-30T12:30:54.019+01:00  INFO 69889 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-30T12:30:54.158+01:00  INFO 69889 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-30T12:30:54.174+01:00  INFO 69889 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-30T12:30:54.221+01:00  INFO 69889 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@779ef5cb
+2025-12-30T12:30:54.222+01:00  INFO 69889 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-30T12:30:54.262+01:00  INFO 69889 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 14.20
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-30T12:30:54.871+01:00  INFO 69889 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-30T12:30:54.907+01:00  INFO 69889 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-30T12:30:55.063+01:00  INFO 69889 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-30T12:30:56.200+01:00  WARN 69889 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-30T12:30:56.274+01:00  INFO 69889 --- [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-12-30T12:30:56.513+01:00  INFO 69889 --- [           main] c.v.f.s.DefaultDeploymentConfiguration   : Vaadin is running in production mode.
+2025-12-30T12:30:56.524+01:00  INFO 69889 --- [           main] c.vaadin.flow.spring.SpringInstantiator  : The number of beans implementing 'I18NProvider' is 0. Cannot use Spring beans for I18N, falling back to the default behavior
+2025-12-30T12:30:56.547+01:00  INFO 69889 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8087 (http) with context path '/'
+2025-12-30T12:30:56.552+01:00  INFO 69889 --- [           main] com.fosagri.application.Application      : Started Application in 4.025 seconds (process running for 4.27)
+Users already exist in database, skipping default user creation.
+2025-12-30T12:30:59.960+01:00  INFO 69889 --- [nio-8087-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-30T12:30:59.960+01:00  INFO 69889 --- [nio-8087-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-30T12:30:59.961+01:00  INFO 69889 --- [nio-8087-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-12-30T12:31:18.907+01:00 ERROR 69889 --- [nio-8087-exec-7] c.v.f.r.internal.ErrorStateRenderer      : The same exception com.vaadin.flow.router.NotFoundException has been thrown several times during navigation. Can't use any HasErrorParameter view for this error.
+
+com.vaadin.flow.router.internal.ErrorStateRenderer$ExceptionsTrace: Exceptions handled by HasErrorParameter views are :com.vaadin.flow.router.AccessDeniedException, com.vaadin.flow.router.NotFoundException
+	at com.vaadin.flow.router.internal.ErrorStateRenderer.handle(ErrorStateRenderer.java:93) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.handleErrorNavigation(UI.java:2130) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.renderViewForRoute(UI.java:2032) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.lambda$browserNavigate$3bdbbbb5$1(UI.java:1881) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.browserNavigate(UI.java:1892) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.ComponentEventBus.fireEventForListener(ComponentEventBus.java:244) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.ComponentEventBus.handleDomEvent(ComponentEventBus.java:501) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.ComponentEventBus.lambda$addDomTrigger$dd1b7957$1(ComponentEventBus.java:303) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.internal.nodefeature.ElementListenerMap.lambda$fireEvent$2(ElementListenerMap.java:475) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at com.vaadin.flow.internal.nodefeature.ElementListenerMap.fireEvent(ElementListenerMap.java:475) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.rpc.EventRpcHandler.handleNode(EventRpcHandler.java:62) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.rpc.AbstractRpcInvocationHandler.handle(AbstractRpcInvocationHandler.java:79) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.handleInvocationData(ServerRpcHandler.java:568) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.lambda$handleInvocations$6(ServerRpcHandler.java:549) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.handleInvocations(ServerRpcHandler.java:549) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.handleRpc(ServerRpcHandler.java:376) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.UidlRequestHandler.synchronizedHandleRequest(UidlRequestHandler.java:136) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.SynchronizedRequestHandler.handleRequest(SynchronizedRequestHandler.java:63) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.VaadinService.handleRequest(VaadinService.java:1853) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.VaadinServlet.service(VaadinServlet.java:398) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.spring.SpringServlet.service(SpringServlet.java:106) ~[vaadin-spring-24.8.6.jar!/:na]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:612) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:394) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:323) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:268) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.servlet.mvc.ServletForwardingController.handleRequestInternal(ServletForwardingController.java:142) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.mvc.AbstractController.handleRequest(AbstractController.java:178) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:51) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:235) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319) ~[spring-security-config-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240) ~[spring-security-config-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+Caused by: com.vaadin.flow.router.NotFoundException: Couldn't find route for 'demandes'
+	at com.vaadin.flow.component.UI.handleErrorNavigation(UI.java:2124) ~[flow-server-24.8.6.jar!/:24.8.6]
+	... 124 common frames omitted
+
+2025-12-30T12:31:18.913+01:00 ERROR 69889 --- [nio-8087-exec-7] c.v.flow.server.DefaultErrorHandler      : 
+
+com.vaadin.flow.router.internal.ErrorStateRenderer$ExceptionsTrace: Exceptions handled by HasErrorParameter views are :com.vaadin.flow.router.AccessDeniedException, com.vaadin.flow.router.NotFoundException
+	at com.vaadin.flow.router.internal.ErrorStateRenderer.handle(ErrorStateRenderer.java:93) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.handleErrorNavigation(UI.java:2130) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.renderViewForRoute(UI.java:2032) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.lambda$browserNavigate$3bdbbbb5$1(UI.java:1881) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.UI.browserNavigate(UI.java:1892) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.ComponentEventBus.fireEventForListener(ComponentEventBus.java:244) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.ComponentEventBus.handleDomEvent(ComponentEventBus.java:501) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.component.ComponentEventBus.lambda$addDomTrigger$dd1b7957$1(ComponentEventBus.java:303) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.internal.nodefeature.ElementListenerMap.lambda$fireEvent$2(ElementListenerMap.java:475) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at com.vaadin.flow.internal.nodefeature.ElementListenerMap.fireEvent(ElementListenerMap.java:475) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.rpc.EventRpcHandler.handleNode(EventRpcHandler.java:62) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.rpc.AbstractRpcInvocationHandler.handle(AbstractRpcInvocationHandler.java:79) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.handleInvocationData(ServerRpcHandler.java:568) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.lambda$handleInvocations$6(ServerRpcHandler.java:549) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.handleInvocations(ServerRpcHandler.java:549) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.ServerRpcHandler.handleRpc(ServerRpcHandler.java:376) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.communication.UidlRequestHandler.synchronizedHandleRequest(UidlRequestHandler.java:136) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.SynchronizedRequestHandler.handleRequest(SynchronizedRequestHandler.java:63) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.VaadinService.handleRequest(VaadinService.java:1853) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.server.VaadinServlet.service(VaadinServlet.java:398) ~[flow-server-24.8.6.jar!/:24.8.6]
+	at com.vaadin.flow.spring.SpringServlet.service(SpringServlet.java:106) ~[vaadin-spring-24.8.6.jar!/:na]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:612) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:394) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:323) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:268) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.servlet.mvc.ServletForwardingController.handleRequestInternal(ServletForwardingController.java:142) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.mvc.AbstractController.handleRequest(AbstractController.java:178) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter.handle(SimpleControllerHandlerAdapter.java:51) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:235) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:229) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:117) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319) ~[spring-security-config-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267) ~[spring-webmvc-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240) ~[spring-security-config-6.5.3.jar!/:6.5.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.10.jar!/:6.2.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.44.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+Caused by: com.vaadin.flow.router.NotFoundException: Couldn't find route for 'demandes'
+	at com.vaadin.flow.component.UI.handleErrorNavigation(UI.java:2124) ~[flow-server-24.8.6.jar!/:24.8.6]
+	... 124 common frames omitted
+
+2025-12-30T13:32:55.955+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m1s38ms).
+2025-12-30T14:22:14.581+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49m18s626ms).
+2025-12-30T14:45:09.339+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m24s704ms).
+2025-12-30T15:05:14.391+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=20m5s51ms).
+2025-12-30T15:11:45.117+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m668ms).
+2025-12-30T15:14:06.764+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m21s647ms).
+🔄 Refreshing demandes for agent: EL KOULALI (ID: 3702)
+🔍 Finding demandes for agent ID: 3702 (EL KOULALI HANANE)
+📋 Native query found 2 demandes for agent EL KOULALI
+   📄 Demande ID: 152, Statut: SOUMISE, Date: 2025-12-26 20:35:00.186
+   📄 Demande ID: 102, Statut: SOUMISE, Date: 2025-12-26 20:30:56.77
+✅ Loaded 2 demandes
+2025-12-30T15:21:33.362+01:00  WARN 69889 --- [nio-8087-exec-8] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/b61780f8-f178-4f95-92b8-1e845bed8677/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/b61780f8-f178-4f95-92b8-1e845bed8677/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:21:33.363+01:00  WARN 69889 --- [nio-8087-exec-6] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/ed90a60a-b25e-4a08-8860-81d8bd7585e5/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/ed90a60a-b25e-4a08-8860-81d8bd7585e5/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:23:05.499+01:00  WARN 69889 --- [nio-8087-exec-2] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/55dce6cf-84cd-4f30-9b30-fa0910f6656d/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/55dce6cf-84cd-4f30-9b30-fa0910f6656d/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:23:32.530+01:00  WARN 69889 --- [nio-8087-exec-6] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/0851b1c5-802a-4080-8d23-fc95c7027af4/Capture d’écran 2025-12-26 à 12.42.37.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/0851b1c5-802a-4080-8d23-fc95c7027af4/Capture d’écran 2025-12-26 à 12.42.37.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:23:32.531+01:00  WARN 69889 --- [nio-8087-exec-8] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/90b7591b-31bc-4465-be04-7bc94f819bb4/Capture d’écran 2025-12-26 à 12.42.37.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/90b7591b-31bc-4465-be04-7bc94f819bb4/Capture d’écran 2025-12-26 à 12.42.37.png] did not match. Use of symlinks is one possible cause.
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+2025-12-30T15:31:18.125+01:00  WARN 69889 --- [nio-8087-exec-9] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/a9a4e96a-f0a7-4783-a285-45cd8d349408/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/a9a4e96a-f0a7-4783-a285-45cd8d349408/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:34:39.672+01:00  WARN 69889 --- [nio-8087-exec-2] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/0e45007a-eff3-4264-bb43-4868a570fa80/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/0e45007a-eff3-4264-bb43-4868a570fa80/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:34:39.672+01:00  WARN 69889 --- [nio-8087-exec-5] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/47045552-4bd2-49dc-aeee-3084b202d9dd/Capture d’écran 2025-12-26 à 12.07.49.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/47045552-4bd2-49dc-aeee-3084b202d9dd/Capture d’écran 2025-12-26 à 12.07.49.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:34:39.672+01:00  WARN 69889 --- [nio-8087-exec-3] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/2ff4294a-b389-4932-9a51-924c96e18b78/Capture d’écran 2025-12-26 à 12.57.39.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/2ff4294a-b389-4932-9a51-924c96e18b78/Capture d’écran 2025-12-26 à 12.57.39.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T15:35:31.483+01:00  WARN 69889 --- [nio-8087-exec-7] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/566f061f-d7be-4c8c-9754-febb9bd8bd4b/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/566f061f-d7be-4c8c-9754-febb9bd8bd4b/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+🔍 Loading fields for prestation ID: 35052 (Coaching scolaire 2026)
+🔎 Service: findByPrestationRefId(35052)
+🔎 Service: Found 12 fields
+   - 35053: يرجى تحميل الشهادة المدرسية لطفلك هنا  (Label)
+   - 35055: مقر التعيين  (Texte)
+   - 35056: رقم الهاتف  (Texte)
+   - 35057: البريد الالكتروني  (Texte)
+   - 35058: إسم الطفل(ة)  (Enfant)
+   - 35059: تاريخ ازدياد الطفل  (Date)
+   - 35060: المستوى الدراسي  (Texte)
+   - 35061: المؤسسة التعليمية (Texte)
+   - 35062:  تخصص البكالوريا (Texte)
+   - 35063: رقم الهاتف للطفل (Texte)
+   - 35064: عنوان البريد الإلكتروني للطفل (Texte)
+   - 35065: هل تريد (ين) الاستفادة من لقاء أولياء الأمور؟  (Option)
+📋 Found 12 fields
+🔄 Converted field: يرجى تحميل الشهادة المدرسية لطفلك هنا  (Label) -> type=label, name=pj
+   Valeurs from DB: [doc]
+   Options in FormField: 1
+🔄 Converted field: مقر التعيين  (Texte) -> type=text, name=affectation
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: رقم الهاتف  (Texte) -> type=text, name=numtel
+   Valeurs from DB: [num]
+   Options in FormField: 1
+🔄 Converted field: البريد الالكتروني  (Texte) -> type=text, name=email
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: إسم الطفل(ة)  (Enfant) -> type=enfant, name=nomenft
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: تاريخ ازدياد الطفل  (Date) -> type=date, name=naissance
+   Valeurs from DB: [date]
+   Options in FormField: 1
+🔄 Converted field: المستوى الدراسي  (Texte) -> type=text, name=niveau
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: المؤسسة التعليمية (Texte) -> type=text, name=etab
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field:  تخصص البكالوريا (Texte) -> type=text, name=branche
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: رقم الهاتف للطفل (Texte) -> type=text, name=numtelenf
+   Valeurs from DB: [num]
+   Options in FormField: 1
+🔄 Converted field: عنوان البريد الإلكتروني للطفل (Texte) -> type=text, name=emailenf
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: هل تريد (ين) الاستفادة من لقاء أولياء الأمور؟  (Option) -> type=select, name=participeparent
+   Valeurs from DB: [نعم, لا]
+   Options in FormField: 2
+📝 Creating FormSchema with 12 fields
+🎨 Calling FormRenderer.createFormWithValues...
+   Agent: EL KOULALI
+   enfantService: present
+   conjointService: present
+📊 Adding 12 field components to FormLayout
+🏗️ Creating field component: name=pj, type=label, label=يرجى تحميل الشهادة المدرسية لطفلك هنا 
+   + Added: pj (Div)
+🏗️ Creating field component: name=affectation, type=text, label=مقر التعيين 
+   + Added: affectation (TextField)
+🏗️ Creating field component: name=numtel, type=text, label=رقم الهاتف 
+   + Added: numtel (TextField)
+🏗️ Creating field component: name=email, type=text, label=البريد الالكتروني 
+   + Added: email (TextField)
+🏗️ Creating field component: name=nomenft, type=enfant, label=إسم الطفل(ة) 
+👶 Creating enfant field: إسم الطفل(ة) 
+   Loading enfants for agent: EL KOULALI
+   Found 15 enfants
+   + Added: nomenft (ComboBox)
+🏗️ Creating field component: name=naissance, type=date, label=تاريخ ازدياد الطفل 
+   + Added: naissance (DatePicker)
+🏗️ Creating field component: name=niveau, type=text, label=المستوى الدراسي 
+   + Added: niveau (TextField)
+🏗️ Creating field component: name=etab, type=text, label=المؤسسة التعليمية
+   + Added: etab (TextField)
+🏗️ Creating field component: name=branche, type=text, label= تخصص البكالوريا
+   + Added: branche (TextField)
+🏗️ Creating field component: name=numtelenf, type=text, label=رقم الهاتف للطفل
+   + Added: numtelenf (TextField)
+🏗️ Creating field component: name=emailenf, type=text, label=عنوان البريد الإلكتروني للطفل
+   + Added: emailenf (TextField)
+🏗️ Creating field component: name=participeparent, type=select, label=هل تريد (ين) الاستفادة من لقاء أولياء الأمور؟ 
+   + Added: participeparent (ComboBox)
+📊 FormLayout now has 12 children
+👁️ Applying conditions to 12 fields...
+   - pj: visible=true (condition=none)
+   - affectation: visible=true (condition=none)
+   - numtel: visible=true (condition=none)
+   - email: visible=true (condition=none)
+   - nomenft: visible=true (condition=none)
+   - naissance: visible=true (condition=none)
+   - niveau: visible=true (condition=none)
+   - etab: visible=true (condition=none)
+   - branche: visible=true (condition=none)
+   - numtelenf: visible=true (condition=none)
+   - emailenf: visible=true (condition=none)
+   - participeparent: visible=true (condition=none)
+✅ Form created successfully, adding to container
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+❌ Agent a déjà une demande active: EL KOULALI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL KOULALI pour prestation: Coaching scolaire 2026
+🔍 Loading fields for prestation ID: 35052 (Coaching scolaire 2026)
+🔎 Service: findByPrestationRefId(35052)
+🔎 Service: Found 12 fields
+   - 35053: يرجى تحميل الشهادة المدرسية لطفلك هنا  (Label)
+   - 35055: مقر التعيين  (Texte)
+   - 35056: رقم الهاتف  (Texte)
+   - 35057: البريد الالكتروني  (Texte)
+   - 35058: إسم الطفل(ة)  (Enfant)
+   - 35059: تاريخ ازدياد الطفل  (Date)
+   - 35060: المستوى الدراسي  (Texte)
+   - 35061: المؤسسة التعليمية (Texte)
+   - 35062:  تخصص البكالوريا (Texte)
+   - 35063: رقم الهاتف للطفل (Texte)
+   - 35064: عنوان البريد الإلكتروني للطفل (Texte)
+   - 35065: هل تريد (ين) الاستفادة من لقاء أولياء الأمور؟  (Option)
+📋 Found 12 fields
+🔄 Converted field: يرجى تحميل الشهادة المدرسية لطفلك هنا  (Label) -> type=label, name=pj
+   Valeurs from DB: [doc]
+   Options in FormField: 1
+🔄 Converted field: مقر التعيين  (Texte) -> type=text, name=affectation
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: رقم الهاتف  (Texte) -> type=text, name=numtel
+   Valeurs from DB: [num]
+   Options in FormField: 1
+🔄 Converted field: البريد الالكتروني  (Texte) -> type=text, name=email
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: إسم الطفل(ة)  (Enfant) -> type=enfant, name=nomenft
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: تاريخ ازدياد الطفل  (Date) -> type=date, name=naissance
+   Valeurs from DB: [date]
+   Options in FormField: 1
+🔄 Converted field: المستوى الدراسي  (Texte) -> type=text, name=niveau
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: المؤسسة التعليمية (Texte) -> type=text, name=etab
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field:  تخصص البكالوريا (Texte) -> type=text, name=branche
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: رقم الهاتف للطفل (Texte) -> type=text, name=numtelenf
+   Valeurs from DB: [num]
+   Options in FormField: 1
+🔄 Converted field: عنوان البريد الإلكتروني للطفل (Texte) -> type=text, name=emailenf
+   Valeurs from DB: [text]
+   Options in FormField: 1
+🔄 Converted field: هل تريد (ين) الاستفادة من لقاء أولياء الأمور؟  (Option) -> type=select, name=participeparent
+   Valeurs from DB: [نعم, لا]
+   Options in FormField: 2
+📝 Creating FormSchema with 12 fields
+🎨 Calling FormRenderer.createFormWithValues...
+   Agent: EL KOULALI
+   enfantService: present
+   conjointService: present
+📊 Adding 12 field components to FormLayout
+🏗️ Creating field component: name=pj, type=label, label=يرجى تحميل الشهادة المدرسية لطفلك هنا 
+   + Added: pj (Div)
+🏗️ Creating field component: name=affectation, type=text, label=مقر التعيين 
+   + Added: affectation (TextField)
+🏗️ Creating field component: name=numtel, type=text, label=رقم الهاتف 
+   + Added: numtel (TextField)
+🏗️ Creating field component: name=email, type=text, label=البريد الالكتروني 
+   + Added: email (TextField)
+🏗️ Creating field component: name=nomenft, type=enfant, label=إسم الطفل(ة) 
+👶 Creating enfant field: إسم الطفل(ة) 
+   Loading enfants for agent: EL KOULALI
+   Found 15 enfants
+   + Added: nomenft (ComboBox)
+🏗️ Creating field component: name=naissance, type=date, label=تاريخ ازدياد الطفل 
+   + Added: naissance (DatePicker)
+🏗️ Creating field component: name=niveau, type=text, label=المستوى الدراسي 
+   + Added: niveau (TextField)
+🏗️ Creating field component: name=etab, type=text, label=المؤسسة التعليمية
+   + Added: etab (TextField)
+🏗️ Creating field component: name=branche, type=text, label= تخصص البكالوريا
+   + Added: branche (TextField)
+🏗️ Creating field component: name=numtelenf, type=text, label=رقم الهاتف للطفل
+   + Added: numtelenf (TextField)
+🏗️ Creating field component: name=emailenf, type=text, label=عنوان البريد الإلكتروني للطفل
+   + Added: emailenf (TextField)
+🏗️ Creating field component: name=participeparent, type=select, label=هل تريد (ين) الاستفادة من لقاء أولياء الأمور؟ 
+   + Added: participeparent (ComboBox)
+📊 FormLayout now has 12 children
+👁️ Applying conditions to 12 fields...
+   - pj: visible=true (condition=none)
+   - affectation: visible=true (condition=none)
+   - numtel: visible=true (condition=none)
+   - email: visible=true (condition=none)
+   - nomenft: visible=true (condition=none)
+   - naissance: visible=true (condition=none)
+   - niveau: visible=true (condition=none)
+   - etab: visible=true (condition=none)
+   - branche: visible=true (condition=none)
+   - numtelenf: visible=true (condition=none)
+   - emailenf: visible=true (condition=none)
+   - participeparent: visible=true (condition=none)
+✅ Form created successfully, adding to container
+✅ Agent éligible: EL KOULALI pour prestation: Chargement du reçu de paiement à la SONARGES
+🔍 Loading fields for prestation ID: 34481 (Chargement du reçu de paiement à la SONARGES)
+🔎 Service: findByPrestationRefId(34481)
+🔎 Service: Found 1 fields
+   - 34482: Prière de charger le reçu de paiement effectué pour la SONARGES. (Label)
+📋 Found 1 fields
+🔄 Converted field: Prière de charger le reçu de paiement effectué pour la SONARGES. (Label) -> type=label, name=pj
+   Valeurs from DB: [doc]
+   Options in FormField: 1
+📝 Creating FormSchema with 1 fields
+🎨 Calling FormRenderer.createFormWithValues...
+   Agent: EL KOULALI
+   enfantService: present
+   conjointService: present
+📊 Adding 1 field components to FormLayout
+🏗️ Creating field component: name=pj, type=label, label=Prière de charger le reçu de paiement effectué pour la SONARGES.
+   + Added: pj (Div)
+📊 FormLayout now has 1 children
+👁️ Applying conditions to 1 fields...
+   - pj: visible=true (condition=none)
+✅ Form created successfully, adding to container
+2025-12-30T15:42:54.393+01:00  WARN 69889 --- [io-8087-exec-10] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/3bca8c49-18b4-495a-9296-40558af02534/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/3bca8c49-18b4-495a-9296-40558af02534/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+🔄 Refreshing demandes for agent: EL-MJIDI (ID: 9233)
+🔍 Finding demandes for agent ID: 9233 (EL-MJIDI SEKAINA)
+📋 Native query found 0 demandes for agent EL-MJIDI
+⚠️ No demandes found but count shows: 0
+✅ Loaded 0 demandes
+🔄 Refreshing demandes for agent: EL-MJIDI (ID: 9233)
+🔍 Finding demandes for agent ID: 9233 (EL-MJIDI SEKAINA)
+📋 Native query found 0 demandes for agent EL-MJIDI
+⚠️ No demandes found but count shows: 0
+✅ Loaded 0 demandes
+🔄 Refreshing demandes for agent: EL-MJIDI (ID: 9233)
+🔍 Finding demandes for agent ID: 9233 (EL-MJIDI SEKAINA)
+📋 Native query found 0 demandes for agent EL-MJIDI
+⚠️ No demandes found but count shows: 0
+✅ Loaded 0 demandes
+✅ Agent éligible: EL-MJIDI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL-MJIDI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL-MJIDI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL-MJIDI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL-MJIDI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+🔄 Refreshing demandes for agent: EL-MJIDI (ID: 9233)
+🔍 Finding demandes for agent ID: 9233 (EL-MJIDI SEKAINA)
+📋 Native query found 0 demandes for agent EL-MJIDI
+⚠️ No demandes found but count shows: 0
+✅ Loaded 0 demandes
+🔄 Refreshing demandes for agent: EL-MJIDI (ID: 9233)
+🔍 Finding demandes for agent ID: 9233 (EL-MJIDI SEKAINA)
+📋 Native query found 0 demandes for agent EL-MJIDI
+⚠️ No demandes found but count shows: 0
+✅ Loaded 0 demandes
+✅ Agent éligible: EL-MJIDI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL-MJIDI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL-MJIDI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL-MJIDI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL-MJIDI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL-MJIDI pour prestation: Chargement du reçu de paiement à la SONARGES
+✅ Agent éligible: EL-MJIDI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL-MJIDI pour prestation: Coaching scolaire 2026
+✅ Agent éligible: EL-MJIDI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: تحميل وثيقة إثبات الدفع الخاص بعملية التسجيل في برنامج الدعم المدرسي عن بُعد – موسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+✅ Agent éligible: EL-MJIDI pour prestation: إطلاق عملية التسجيل في برنامج الدعم المدرسي عن بُعد برسم الموسم 2025/2026
+2025-12-30T15:51:57.338+01:00  WARN 69889 --- [nio-8087-exec-6] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23505
+2025-12-30T15:51:57.338+01:00 ERROR 69889 --- [nio-8087-exec-6] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: duplicate key value violates unique constraint "adhconjoint_pkey"
+  Detail: Key (adhconjointid)=(1) already exists.
+🔄 Refreshing demandes for agent: EL-MJIDI (ID: 9233)
+🔍 Finding demandes for agent ID: 9233 (EL-MJIDI SEKAINA)
+📋 Native query found 0 demandes for agent EL-MJIDI
+⚠️ No demandes found but count shows: 0
+✅ Loaded 0 demandes
+📊 Adding 0 field components to FormLayout
+📊 FormLayout now has 0 children
+👁️ Applying conditions to 0 fields...
+🔎 Service: findByPrestationRefId(35023)
+🔎 Service: Found 7 fields
+   - 35025: الاسم العائلي والاسم الشخصي للطفل (Enfant)
+   - 35026: الاسم العائلي والاسم الشخصي لوليّ الأمر (Texte)
+   - 35027: رقم هاتف الطفل (مع واتساب) (Texte)
+   - 35028: رقم هاتف وليّ الأمر (مع واتساب) (Texte)
+   - 35029: رمز مسار (Texte)
+   - 35030: البريد الإلكتروني للطفل (Texte)
+   - 35031: البريد الإلكتروني لوليّ الأمر (Texte)
+📊 Adding 7 field components to FormLayout
+🏗️ Creating field component: name=enft, type=enfant, label=الاسم العائلي والاسم الشخصي للطفل
+👶 Creating enfant field: الاسم العائلي والاسم الشخصي للطفل
+   ⚠️ selectedAgent=null, enfantService=null
+   + Added: enft (ComboBox)
+🏗️ Creating field component: name=nompradh, type=text, label=الاسم العائلي والاسم الشخصي لوليّ الأمر
+   + Added: nompradh (TextField)
+🏗️ Creating field component: name=wtsenft, type=text, label=رقم هاتف الطفل (مع واتساب)
+   + Added: wtsenft (TextField)
+🏗️ Creating field component: name=wtsadh, type=text, label=رقم هاتف وليّ الأمر (مع واتساب)
+   + Added: wtsadh (TextField)
+🏗️ Creating field component: name=codemasar, type=text, label=رمز مسار
+   + Added: codemasar (TextField)
+🏗️ Creating field component: name=emailenft, type=text, label=البريد الإلكتروني للطفل
+   + Added: emailenft (TextField)
+🏗️ Creating field component: name=emailadh, type=text, label=البريد الإلكتروني لوليّ الأمر
+   + Added: emailadh (TextField)
+📊 FormLayout now has 7 children
+👁️ Applying conditions to 7 fields...
+   - enft: visible=true (condition=none)
+   - nompradh: visible=true (condition=none)
+   - wtsenft: visible=true (condition=none)
+   - wtsadh: visible=true (condition=none)
+   - codemasar: visible=true (condition=none)
+   - emailenft: visible=true (condition=none)
+   - emailadh: visible=true (condition=none)
+2025-12-30T16:03:34.012+01:00  WARN 69889 --- [io-8087-exec-10] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/4fc16d79-ce43-45a7-9704-2be5486b11dd/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/4fc16d79-ce43-45a7-9704-2be5486b11dd/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:35.074+01:00  WARN 69889 --- [nio-8087-exec-5] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/1bc5a225-e865-497f-b5ea-25c3b522245e/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/1bc5a225-e865-497f-b5ea-25c3b522245e/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:35.437+01:00  WARN 69889 --- [nio-8087-exec-9] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/ff68abec-5747-4d34-9ed9-f6b98beb6195/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/ff68abec-5747-4d34-9ed9-f6b98beb6195/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:41.601+01:00  WARN 69889 --- [io-8087-exec-10] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/33c502e8-0e7f-4c1c-8e42-284d1204ff0c/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/33c502e8-0e7f-4c1c-8e42-284d1204ff0c/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:42.449+01:00  WARN 69889 --- [nio-8087-exec-5] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/1dbccefa-54c1-40fe-b7ba-2477ced46fec/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/1dbccefa-54c1-40fe-b7ba-2477ced46fec/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:42.995+01:00  WARN 69889 --- [nio-8087-exec-6] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/5da2b3b8-ba2a-4d05-8c62-22e5f6f90cfa/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/5da2b3b8-ba2a-4d05-8c62-22e5f6f90cfa/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:52.491+01:00  WARN 69889 --- [nio-8087-exec-3] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/8ee09279-e18d-4524-ad88-e51db41c88a2/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/8ee09279-e18d-4524-ad88-e51db41c88a2/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:03:52.493+01:00  WARN 69889 --- [nio-8087-exec-5] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/b20b766d-c327-4d31-a7e3-d56da07a43a8/Capture d’écran 2025-12-26 à 12.57.39.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/b20b766d-c327-4d31-a7e3-d56da07a43a8/Capture d’écran 2025-12-26 à 12.57.39.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:05:01.920+01:00  WARN 69889 --- [io-8087-exec-10] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/af0bfef8-c961-4267-a391-82f199d968a5/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/af0bfef8-c961-4267-a391-82f199d968a5/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:05:01.924+01:00  WARN 69889 --- [nio-8087-exec-5] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/95f93321-70e0-4a61-b676-b5316e71d434/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/95f93321-70e0-4a61-b676-b5316e71d434/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:05:01.950+01:00  INFO 69889 --- [nio-8087-exec-3] c.v.f.i.nodefeature.ElementListenerMap   : Ignored listener invocation for click event from the client side for an inert vaadin-button element
+2025-12-30T16:05:01.950+01:00  INFO 69889 --- [nio-8087-exec-3] c.v.f.i.nodefeature.ElementListenerMap   : Ignored listener invocation for click event from the client side for an inert vaadin-button element
+2025-12-30T16:05:04.050+01:00  WARN 69889 --- [nio-8087-exec-1] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/4bfa8d1e-9b18-4854-b9e9-9ddce0849d71/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/4bfa8d1e-9b18-4854-b9e9-9ddce0849d71/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:05:04.053+01:00  WARN 69889 --- [nio-8087-exec-7] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/3d8ee2d4-47dc-4c13-b19b-c2d6c20a9e4c/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/3d8ee2d4-47dc-4c13-b19b-c2d6c20a9e4c/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:05:05.773+01:00  WARN 69889 --- [nio-8087-exec-8] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/4ff3f1af-f294-4a33-8aaa-99dafb24a89c/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/4ff3f1af-f294-4a33-8aaa-99dafb24a89c/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:05:05.777+01:00  WARN 69889 --- [nio-8087-exec-6] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/469d9c43-f842-4d62-a5cd-5d7931002edf/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/469d9c43-f842-4d62-a5cd-5d7931002edf/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:06:10.316+01:00  WARN 69889 --- [nio-8087-exec-4] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/e364955c-3f9d-4f5d-aa53-633106f5390a/Capture d’écran 2025-09-10 à 10.10.36.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/e364955c-3f9d-4f5d-aa53-633106f5390a/Capture d’écran 2025-09-10 à 10.10.36.png] did not match. Use of symlinks is one possible cause.
+2025-12-30T16:06:10.321+01:00  WARN 69889 --- [nio-8087-exec-3] o.a.c.w.AbstractFileResourceSet          : Resource for web application [] at path [/VAADIN/dynamic/resource/1/f04d6135-b206-4820-b84d-f03f395b403c/Capture d’écran 2025-09-10 à 09.58.53.png] was not loaded as the canonical path [/VAADIN/dynamic/resource/1/f04d6135-b206-4820-b84d-f03f395b403c/Capture d’écran 2025-09-10 à 09.58.53.png] did not match. Use of symlinks is one possible cause.
+📊 Adding 0 field components to FormLayout
+📊 FormLayout now has 0 children
+👁️ Applying conditions to 0 fields...
+📊 Adding 0 field components to FormLayout
+📊 FormLayout now has 0 children
+👁️ Applying conditions to 0 fields...
+🔎 Service: findByPrestationRefId(6671)
+🔎 Service: Found 20 fields
+   - 6672: ** تحميل الوثائق المطلوبة ** (Label)
+   - 6674: مقر التعيين (Texte)
+   - 6675: السلم (Texte)
+   - 6676: رقم الهاتف (Texte)
+   - 6677: البريد الالكتروني (Texte)
+   - 6678: معلومات حول الطفل الحاصل على شهادة الباكالوريا (Label)
+   - 6679: الاسم الكامل للابن(ة)  (Enfant)
+   - 6680: تاريخ الازدياد (Date)
+   - 6681: رقم البطاقة الوطنية (Texte)
+   - 6682: رقم الهاتف (Texte)
+   - 6683: البريد الالكتروني (Texte)
+   - 6684: معدل الامتحان الوطني (Texte)
+   - 6826: معلومات حول الزوج(ة) (Label)
+   - 6827: مهنة الزوج(ة) (Texte)
+   - 6828: مع ذكر الوزارة /الادارة/الشركة… العامل(ة) بها (Texte)
+   - 6829: هل قمتم بإرسال طلب آخر للاستفادة من منحة الاستحقاق ممنوحة من طرف مؤسسة أو جمعية أخرى ؟ (Option)
+   - 6830: معلومات إضافية  (Label)
+   - 6831: الحالة العائلية للمنخرط(ة)  (Texte)
+   - 6832: عدد الاطفال المتمدرسة  (Texte)
+   - 6834: عدد الاطفال الغير متمدرسة  (Texte)
+📊 Adding 20 field components to FormLayout
+🏗️ Creating field component: name=pj, type=label, label=** تحميل الوثائق المطلوبة **
+   + Added: pj (Div)
+🏗️ Creating field component: name=affectation, type=text, label=مقر التعيين
+   + Added: affectation (TextField)
+🏗️ Creating field component: name=echelle, type=text, label=السلم
+   + Added: echelle (TextField)
+🏗️ Creating field component: name=numtel, type=text, label=رقم الهاتف
+   + Added: numtel (TextField)
+🏗️ Creating field component: name=email, type=text, label=البريد الالكتروني
+   + Added: email (TextField)
+🏗️ Creating field component: name=infobac, type=label, label=معلومات حول الطفل الحاصل على شهادة الباكالوريا
+   + Added: infobac (Div)
+🏗️ Creating field component: name=enfant, type=enfant, label=الاسم الكامل للابن(ة) 
+👶 Creating enfant field: الاسم الكامل للابن(ة) 
+   ⚠️ selectedAgent=null, enfantService=null
+   + Added: enfant (ComboBox)
+🏗️ Creating field component: name=naissanceenft, type=date, label=تاريخ الازدياد
+   + Added: naissanceenft (DatePicker)
+🏗️ Creating field component: name=cinenft, type=text, label=رقم البطاقة الوطنية
+   + Added: cinenft (TextField)
+🏗️ Creating field component: name=telenft, type=text, label=رقم الهاتف
+   + Added: telenft (TextField)
+🏗️ Creating field component: name=emailenft, type=text, label=البريد الالكتروني
+   + Added: emailenft (TextField)
+🏗️ Creating field component: name=resultatbac, type=text, label=معدل الامتحان الوطني
+   + Added: resultatbac (TextField)
+🏗️ Creating field component: name=CONJOIT, type=label, label=معلومات حول الزوج(ة)
+   + Added: CONJOIT (Div)
+🏗️ Creating field component: name=fonction, type=text, label=مهنة الزوج(ة)
+   + Added: fonction (TextField)
+🏗️ Creating field component: name=organisme, type=text, label=مع ذكر الوزارة /الادارة/الشركة… العامل(ة) بها
+   + Added: organisme (TextField)
+🏗️ Creating field component: name=dejabeneficiaire, type=select, label=هل قمتم بإرسال طلب آخر للاستفادة من منحة الاستحقاق ممنوحة من طرف مؤسسة أو جمعية أخرى ؟
+   + Added: dejabeneficiaire (ComboBox)
+🏗️ Creating field component: name=autreinformation, type=label, label=معلومات إضافية 
+   + Added: autreinformation (Div)
+🏗️ Creating field component: name=sitiationfamiliale, type=text, label=الحالة العائلية للمنخرط(ة) 
+   + Added: sitiationfamiliale (TextField)
+🏗️ Creating field component: name=nbrenfant, type=text, label=عدد الاطفال المتمدرسة 
+   + Added: nbrenfant (TextField)
+🏗️ Creating field component: name=nbrenfantnon, type=text, label=عدد الاطفال الغير متمدرسة 
+   + Added: nbrenfantnon (TextField)
+📊 FormLayout now has 20 children
+👁️ Applying conditions to 20 fields...
+   - pj: visible=true (condition=none)
+   - affectation: visible=true (condition=none)
+   - echelle: visible=true (condition=none)
+   - numtel: visible=true (condition=none)
+   - email: visible=true (condition=none)
+   - infobac: visible=true (condition=none)
+   - enfant: visible=true (condition=none)
+   - naissanceenft: visible=true (condition=none)
+   - cinenft: visible=true (condition=none)
+   - telenft: visible=true (condition=none)
+   - emailenft: visible=true (condition=none)
+   - resultatbac: visible=true (condition=none)
+   - CONJOIT: visible=true (condition=none)
+   - fonction: visible=true (condition=none)
+   - organisme: visible=true (condition=none)
+   - dejabeneficiaire: visible=true (condition=none)
+   - autreinformation: visible=true (condition=none)
+   - sitiationfamiliale: visible=true (condition=none)
+   - nbrenfant: visible=true (condition=none)
+   - nbrenfantnon: visible=true (condition=none)
+📊 Adding 0 field components to FormLayout
+📊 FormLayout now has 0 children
+👁️ Applying conditions to 0 fields...
+2025-12-30T16:33:19.345+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m12s42ms).
+2025-12-30T16:57:38.820+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m19s440ms).
+2025-12-30T17:13:32.820+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s).
+2025-12-30T18:03:02.102+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49m29s282ms).
+2025-12-30T18:42:41.534+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=39m39s432ms).
+2025-12-30T19:17:55.294+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=35m13s760ms).
+2025-12-30T19:20:47.170+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m51s876ms).
+2025-12-30T20:25:29.706+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=29m42s150ms).
+2025-12-30T21:00:02.049+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m2s324ms).
+2025-12-30T21:11:03.649+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m1s600ms).
+2025-12-30T21:14:39.373+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m5s705ms).
+2025-12-31T00:30:52.645+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m41s804ms).
+2025-12-31T01:12:31.365+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=41m38s721ms).
+2025-12-31T01:45:41.654+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=33m10s288ms).
+2025-12-31T02:49:36.448+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h1m24s752ms).
+2025-12-31T03:22:33.972+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m57s524ms).
+2025-12-31T04:32:52.020+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h7m48s2ms).
+2025-12-31T06:01:01.089+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h28m9s68ms).
+2025-12-31T06:16:57.177+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m56s89ms).
+2025-12-31T07:27:48.300+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h8m21s79ms).
+2025-12-31T08:09:34.868+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=41m46s568ms).
+2025-12-31T09:03:06.909+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=53m32s40ms).
+2025-12-31T09:31:53.185+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=28m46s277ms).
+2025-12-31T09:52:22.336+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m59s16ms).
+2025-12-31T10:48:01.716+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s932ms).
+2025-12-31T10:52:54.315+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m22s550ms).
+2025-12-31T11:17:56.111+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m31s718ms).
+2025-12-31T12:44:24.922+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h23m58s757ms).
+2025-12-31T14:03:21.887+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h18m56s965ms).
+2025-12-31T14:16:05.787+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m43s884ms).
+2025-12-31T14:37:54.996+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m19s128ms).
+2025-12-31T14:45:01.887+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m6s878ms).
+2025-12-31T14:57:20.130+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m18s195ms).
+2025-12-31T15:20:21.834+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=23m1s704ms).
+2025-12-31T15:30:57.893+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m36s59ms).
+2025-12-31T16:29:36.008+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=47m37s951ms).
+2025-12-31T17:43:01.156+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h13m25s148ms).
+2025-12-31T18:59:28.401+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h16m27s245ms).
+2025-12-31T20:36:10.357+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h36m41s956ms).
+2025-12-31T21:47:00.461+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h10m50s104ms).
+2025-12-31T23:03:07.885+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h16m7s424ms).
+2026-01-01T00:38:43.770+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h35m35s885ms).
+2026-01-01T01:50:57.979+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h12m14s209ms).
+2026-01-01T02:55:55.794+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h4m57s815ms).
+2026-01-01T21:25:51.077+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18h29m55s280ms).
+2026-01-01T21:50:33.759+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m12s275ms).
+2026-01-01T22:59:56.611+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m52s143ms).
+2026-01-01T23:14:29.234+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m2s621ms).
+2026-01-01T23:21:04.861+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m35s627ms).
+2026-01-02T00:14:58.529+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m23s251ms).
+2026-01-02T01:39:48.122+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m19s8ms).
+2026-01-02T01:57:12.965+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m24s843ms).
+2026-01-02T02:47:18.986+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=50m6s21ms).
+2026-01-02T03:24:51.218+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=37m32s232ms).
+2026-01-02T03:57:47.491+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m56s273ms).
+2026-01-02T04:50:16.292+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=52m28s800ms).
+2026-01-02T07:26:07.616+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m20s126ms).
+2026-01-02T07:43:27.087+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m49s435ms).
+2026-01-02T08:01:08.181+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m11s82ms).
+2026-01-02T08:49:08.011+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m59s288ms).
+2026-01-02T09:05:24.999+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m46s990ms).
+2026-01-02T10:08:30.300+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m4s586ms).
+2026-01-02T10:26:15.685+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m45s362ms).
+2026-01-02T10:36:52.433+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m6s757ms).
+2026-01-02T10:40:28.997+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m36s564ms).
+2026-01-02T10:43:37.654+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m8s657ms).
+2026-01-02T10:59:22.315+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m44s661ms).
+2026-01-02T11:09:26.464+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m34s156ms).
+2026-01-02T12:25:59.569+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m32s117ms).
+2026-01-02T12:44:04.534+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m34s928ms).
+2026-01-02T12:48:01.032+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m26s480ms).
+2026-01-02T13:04:51.594+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m50s562ms).
+2026-01-02T13:06:52.199+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m30s586ms).
+2026-01-02T13:09:42.347+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49s403ms).
+2026-01-02T13:11:45.385+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=55s680ms).
+2026-01-02T13:15:38.462+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m23s65ms).
+2026-01-02T13:33:29.811+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m51s349ms).
+2026-01-02T14:26:20.361+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=52m50s550ms).
+2026-01-02T14:28:22.917+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m2s556ms).
+2026-01-02T15:57:47.776+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=54s182ms).
+2026-01-02T16:55:54.103+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m6s40ms).
+2026-01-02T16:57:41.751+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m47s648ms).
+2026-01-02T19:09:03.002+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m50s43ms).
+2026-01-02T19:27:08.626+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m5s625ms).
+2026-01-02T19:34:47.358+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m38s731ms).
+2026-01-02T19:38:34.675+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m47s312ms).
+2026-01-02T21:14:44.458+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m8s828ms).
+2026-01-02T21:35:35.877+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m21s257ms).
+2026-01-02T21:48:46.064+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m10s137ms).
+2026-01-02T23:32:05.576+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m48s666ms).
+2026-01-03T00:07:11.127+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=35m5s551ms).
+2026-01-03T00:32:17.864+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=25m6s737ms).
+2026-01-03T01:47:57.227+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h15m39s363ms).
+2026-01-03T03:15:40.724+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h27m43s497ms).
+2026-01-03T04:54:59.829+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h39m19s105ms).
+2026-01-03T06:29:54.676+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h34m54s847ms).
+2026-01-03T06:45:36.836+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m42s159ms).
+2026-01-03T08:01:43.157+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h16m6s322ms).
+2026-01-03T08:18:49.440+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m6s283ms).
+2026-01-03T09:02:45.659+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=43m56s219ms).
+2026-01-03T10:18:52.725+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h16m7s66ms).
+2026-01-03T10:48:28.415+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=29m35s689ms).
+2026-01-03T11:04:46.356+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m17s941ms).
+2026-01-03T12:22:49.192+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h18m2s837ms).
+2026-01-03T12:57:33.909+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=34m44s717ms).
+2026-01-03T13:23:03.363+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=25m29s454ms).
+2026-01-03T14:00:18.098+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m44s531ms).
+2026-01-03T15:38:18.904+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m28s390ms).
+2026-01-03T15:51:09.878+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m50s974ms).
+2026-01-03T16:15:48.235+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m8s103ms).
+2026-01-03T16:22:16.703+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=58s418ms).
+2026-01-03T16:48:23.289+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m36s515ms).
+2026-01-03T17:05:01.642+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m38s353ms).
+2026-01-03T17:32:25.425+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m23s545ms).
+2026-01-03T17:36:32.004+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m6s580ms).
+2026-01-03T18:09:54.618+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m22s468ms).
+2026-01-03T18:11:11.503+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m16s885ms).
+2026-01-03T18:43:06.889+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m25s256ms).
+2026-01-03T18:56:19.509+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=13m12s621ms).
+2026-01-03T18:59:08.603+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m49s94ms).
+2026-01-04T00:59:45.915+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m4s464ms).
+2026-01-04T01:30:37.703+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=30m51s791ms).
+2026-01-04T05:20:51.562+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h1m41s413ms).
+2026-01-04T06:18:38.191+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m15s680ms).
+2026-01-04T07:14:36.658+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=55m58s467ms).
+2026-01-04T09:09:45.771+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m8s259ms).
+2026-01-04T09:27:07.698+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m21s929ms).
+2026-01-04T09:44:28.427+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m50s688ms).
+2026-01-04T09:57:02.616+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m34s189ms).
+2026-01-04T10:07:20.664+01:00  WARN 69889 --- [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m18s47ms).

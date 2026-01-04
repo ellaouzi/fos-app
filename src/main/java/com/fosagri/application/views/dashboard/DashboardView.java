@@ -15,11 +15,12 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Tableau de bord")
-@Route("")
-@Menu(order = 0, icon = LineAwesomeIconUrl.CHART_LINE_SOLID)
+@Route("dashboard")
+@RolesAllowed("ADMIN")
 public class DashboardView extends VerticalLayout {
 
     @Autowired

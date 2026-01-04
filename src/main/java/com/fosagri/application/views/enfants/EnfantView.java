@@ -23,6 +23,7 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 import java.io.ByteArrayInputStream;
@@ -30,7 +31,7 @@ import java.text.SimpleDateFormat;
 
 @PageTitle("Gestion des Enfants")
 @Route("enfants")
-@Menu(order = 4, icon = LineAwesomeIconUrl.CHILD_SOLID)
+@RolesAllowed("ADMIN")
 public class EnfantView extends VerticalLayout {
 
     @Autowired

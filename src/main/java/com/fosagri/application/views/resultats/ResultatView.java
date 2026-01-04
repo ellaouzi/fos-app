@@ -18,12 +18,14 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 
 @PageTitle("Gestion des Résultats")
 @Route("resultats")
-@Menu(order = 6, icon = LineAwesomeIconUrl.CHART_BAR_SOLID)
+@Menu(order = 7, icon = LineAwesomeIconUrl.CHART_BAR_SOLID)
+@RolesAllowed("ADMIN")
 public class ResultatView extends VerticalLayout {
 
     @Autowired

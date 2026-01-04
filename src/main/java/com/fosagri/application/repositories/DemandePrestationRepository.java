@@ -15,7 +15,10 @@ import java.util.List;
 public interface DemandePrestationRepository extends JpaRepository<DemandePrestation, Long> {
     
     List<DemandePrestation> findByAgent(AdhAgent agent);
-    
+
+    @Query("SELECT d FROM DemandePrestation d WHERE d.agent.adhAgentId = :agentId ORDER BY d.dateDemande DESC")
+    List<DemandePrestation> findByAgentId(@Param("agentId") int agentId);
+
     List<DemandePrestation> findByPrestation(PrestationRef prestation);
     
     List<DemandePrestation> findByStatut(String statut);
@@ -63,4 +66,20 @@ public interface DemandePrestationRepository extends JpaRepository<DemandePresta
     
     @Query("SELECT d.id, d.statut, d.dateDemande, d.dateTraitement, d.agent.adhAgentId, d.agent.NOM_AG, d.agent.PR_AG, d.prestation.id, d.reponseJson FROM DemandePrestation d WHERE d.prestation = :prestation")
     List<Object[]> findByPrestationWithJsonData(@Param("prestation") PrestationRef prestation);
+
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.agent = :agent")
+    long countByAgent(@Param("agent") AdhAgent agent);
+
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.agent.adhAgentId = :agentId")
+    long countByAgentId(@Param("agentId") int agentId);
+
+    @Query("SELECT COUNT(d) FROM DemandePrestation d WHERE d.agent = :agent AND d.statut = :statut")
+    long countByAgentAndStatut(@Param("agent") AdhAgent agent, @Param("statut") String statut);
+
+    // Native query to directly query by agent_id column
+    @Query(value = "SELECT * FROM demande_prestation WHERE agent_id = :agentId ORDER BY date_demande DESC", nativeQuery = true)
+    List<DemandePrestation> findByAgentIdNative(@Param("agentId") int agentId);
+
+    @Query(value = "SELECT COUNT(*) FROM demande_prestation WHERE agent_id = :agentId", nativeQuery = true)
+    long countByAgentIdNative(@Param("agentId") int agentId);
 }

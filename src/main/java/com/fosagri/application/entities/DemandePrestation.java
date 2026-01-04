@@ -10,6 +10,10 @@ import java.util.Date;
 @Entity
 @Table(name = "demande_prestation")
 public class DemandePrestation {
+
+    public enum StatutDemande {
+        SOUMISE, EN_COURS, ACCEPTEE, REFUSEE, TERMINEE
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,8 +22,8 @@ public class DemandePrestation {
     @JoinColumn(name = "prestation_id")
     private PrestationRef prestation;
     
-    @ManyToOne
-    @JoinColumn(name = "agent_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "agent_id", referencedColumnName = "adhagentid")
     private AdhAgent agent;
     
     @Column(columnDefinition = "TEXT")

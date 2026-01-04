@@ -10,6 +10,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H3;
@@ -82,18 +83,21 @@ public class FormRenderer {
         }
     }
     
-    public static FormWithValues createFormWithValues(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit, 
+    public static FormWithValues createFormWithValues(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit,
                                                      AdhAgent selectedAgent, AdhEnfantService enfantService, AdhConjointService conjointService) {
         VerticalLayout container = new VerticalLayout();
         container.setPadding(false);
-        container.setSpacing(true);
-
-        if (schema.getTitle() != null) {
-            container.add(new H3(schema.getTitle()));
-        }
+        container.setSpacing(false);
+        container.setWidthFull();
+        container.getStyle().set("gap", "0.5rem");
 
         FormLayout formLayout = new FormLayout();
         formLayout.setWidthFull();
+        formLayout.getStyle().set("min-height", "100px");
+        formLayout.setResponsiveSteps(
+            new FormLayout.ResponsiveStep("0", 1),
+            new FormLayout.ResponsiveStep("500px", 2)
+        );
 
         Map<String, Component> fieldComponents = new HashMap<>();
         Map<String, Object> currentValues = new HashMap<>();
@@ -102,11 +106,15 @@ public class FormRenderer {
         fields.sort(Comparator
                 .comparing((FormField f) -> f.getOrder() == null ? Integer.MAX_VALUE : f.getOrder())
                 .thenComparing(FormField::getName, Comparator.nullsLast(String::compareTo)));
+
+        System.out.println("📊 Adding " + fields.size() + " field components to FormLayout");
         for (FormField field : fields) {
             Component comp = createFieldComponent(field, currentValues, () -> applyConditions(schema, fieldComponents, currentValues), selectedAgent, enfantService, conjointService);
             fieldComponents.put(field.getName(), comp);
             formLayout.add(comp);
+            System.out.println("   + Added: " + field.getName() + " (" + comp.getClass().getSimpleName() + ")");
         }
+        System.out.println("📊 FormLayout now has " + formLayout.getChildren().count() + " children");
 
         container.add(formLayout);
 
@@ -124,18 +132,21 @@ public class FormRenderer {
         return new FormWithValues(container, currentValues);
     }
 
-    public static Component createForm(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit, 
+    public static Component createForm(FormSchema schema, java.util.function.Consumer<Map<String, Object>> onSubmit,
                                      AdhAgent selectedAgent, AdhEnfantService enfantService, AdhConjointService conjointService) {
         VerticalLayout container = new VerticalLayout();
         container.setPadding(false);
-        container.setSpacing(true);
-
-        if (schema.getTitle() != null) {
-            container.add(new H3(schema.getTitle()));
-        }
+        container.setSpacing(false);
+        container.setWidthFull();
+        container.getStyle().set("gap", "0.5rem");
 
         FormLayout formLayout = new FormLayout();
         formLayout.setWidthFull();
+        formLayout.getStyle().set("min-height", "100px");
+        formLayout.setResponsiveSteps(
+            new FormLayout.ResponsiveStep("0", 1),
+            new FormLayout.ResponsiveStep("500px", 2)
+        );
 
         Map<String, Component> fieldComponents = new HashMap<>();
         Map<String, Object> currentValues = new HashMap<>();
@@ -144,11 +155,15 @@ public class FormRenderer {
         fields.sort(Comparator
                 .comparing((FormField f) -> f.getOrder() == null ? Integer.MAX_VALUE : f.getOrder())
                 .thenComparing(FormField::getName, Comparator.nullsLast(String::compareTo)));
+
+        System.out.println("📊 Adding " + fields.size() + " field components to FormLayout");
         for (FormField field : fields) {
             Component comp = createFieldComponent(field, currentValues, () -> applyConditions(schema, fieldComponents, currentValues), selectedAgent, enfantService, conjointService);
             fieldComponents.put(field.getName(), comp);
             formLayout.add(comp);
+            System.out.println("   + Added: " + field.getName() + " (" + comp.getClass().getSimpleName() + ")");
         }
+        System.out.println("📊 FormLayout now has " + formLayout.getChildren().count() + " children");
 
         container.add(formLayout);
 
@@ -166,9 +181,10 @@ public class FormRenderer {
         return container;
     }
 
-    private static Component createFieldComponent(FormField field, Map<String, Object> currentValues, Runnable onChange, 
+    private static Component createFieldComponent(FormField field, Map<String, Object> currentValues, Runnable onChange,
                                                 AdhAgent selectedAgent, AdhEnfantService enfantService, AdhConjointService conjointService) {
         String type = Optional.ofNullable(field.getType()).orElse("text").toLowerCase(Locale.ROOT);
+        System.out.println("🏗️ Creating field component: name=" + field.getName() + ", type=" + type + ", label=" + field.getLabel());
         switch (type) {
             case "number": {
                 NumberField nf = new NumberField(field.getLabel());
@@ -202,20 +218,70 @@ public class FormRenderer {
                 cbx.addValueChangeListener(e -> { currentValues.put(field.getName(), e.getValue()); onChange.run(); });
                 return cbx;
             }
+            case "multiselect": {
+                System.out.println("🔢 Creating multiselect field: " + field.getLabel());
+                MultiSelectComboBox<FieldOption> mscb = new MultiSelectComboBox<>(field.getLabel());
+                mscb.setWidthFull();
+                mscb.setMinWidth("200px");
+                mscb.getStyle().set("min-height", "40px");
+                mscb.setPlaceholder(field.getPlaceholder() != null ? field.getPlaceholder() : "Sélectionner...");
+                mscb.setRequiredIndicatorVisible(Boolean.TRUE.equals(field.getRequired()));
+                mscb.setItemLabelGenerator(FieldOption::getLabel);
+                if (field.getOptions() != null && !field.getOptions().isEmpty()) {
+                    System.out.println("   Setting " + field.getOptions().size() + " options for multiselect");
+                    for (FieldOption opt : field.getOptions()) {
+                        System.out.println("      - " + opt.getLabel() + " = " + opt.getValue());
+                    }
+                    mscb.setItems(field.getOptions());
+                } else {
+                    System.out.println("   ⚠️ No options for multiselect field!");
+                }
+                mscb.addValueChangeListener(e -> {
+                    Set<FieldOption> selected = e.getValue();
+                    List<String> selectedValues = selected.stream()
+                        .map(FieldOption::getValue)
+                        .collect(Collectors.toList());
+                    currentValues.put(field.getName(), selectedValues);
+                    onChange.run();
+                });
+                return mscb;
+            }
+            case "label": {
+                // Static label as section title/header
+                Div labelDiv = new Div();
+                labelDiv.getStyle()
+                    .set("padding", "12px 0")
+                    .set("margin-top", "16px")
+                    .set("border-bottom", "2px solid var(--lumo-primary-color)")
+                    .set("font-weight", "600")
+                    .set("font-size", "1.1em")
+                    .set("color", "var(--lumo-primary-text-color)");
+                labelDiv.setText(field.getLabel());
+                return labelDiv;
+            }
             case "enfant": {
+                System.out.println("👶 Creating enfant field: " + field.getLabel());
                 ComboBox<AdhEnfant> enfantCombo = new ComboBox<>(field.getLabel());
+                enfantCombo.setWidthFull();
+                enfantCombo.setMinWidth("200px");
+                enfantCombo.getStyle().set("min-height", "40px");
                 enfantCombo.setPlaceholder("Sélectionner un enfant");
                 enfantCombo.setRequiredIndicatorVisible(Boolean.TRUE.equals(field.getRequired()));
-                enfantCombo.setItemLabelGenerator(enfant -> 
-                    enfant.getNom_pac() + " " + enfant.getPr_pac() + 
+                enfantCombo.setItemLabelGenerator(enfant ->
+                    enfant.getNom_pac() + " " + enfant.getPr_pac() +
                     (enfant.getDat_n_pac() != null ? " (né le " + enfant.getDat_n_pac() + ")" : ""));
-                
+
                 if (selectedAgent != null && enfantService != null) {
+                    System.out.println("   Loading enfants for agent: " + selectedAgent.getNOM_AG());
                     List<AdhEnfant> enfants = enfantService.findBasicInfoByAgent(selectedAgent);
-                    enfantCombo.setItems(enfants);
-                    if (enfants.isEmpty()) {
+                    System.out.println("   Found " + (enfants != null ? enfants.size() : 0) + " enfants");
+                    if (enfants != null && !enfants.isEmpty()) {
+                        enfantCombo.setItems(enfants);
+                    } else {
                         enfantCombo.setPlaceholder("Aucun enfant trouvé pour cet agent");
                     }
+                } else {
+                    System.out.println("   ⚠️ selectedAgent=" + (selectedAgent != null ? "present" : "null") + ", enfantService=" + (enfantService != null ? "present" : "null"));
                 }
                 
                 enfantCombo.addValueChangeListener(e -> {
@@ -236,6 +302,9 @@ public class FormRenderer {
             }
             case "conjoint": {
                 ComboBox<AdhConjoint> conjointCombo = new ComboBox<>(field.getLabel());
+                conjointCombo.setWidthFull();
+                conjointCombo.setMinWidth("200px");
+                conjointCombo.getStyle().set("min-height", "40px");
                 conjointCombo.setPlaceholder("Sélectionner un conjoint");
                 conjointCombo.setRequiredIndicatorVisible(Boolean.TRUE.equals(field.getRequired()));
                 conjointCombo.setItemLabelGenerator(conjoint -> 
@@ -290,10 +359,16 @@ public class FormRenderer {
     }
 
     private static void applyConditions(FormSchema schema, Map<String, Component> fieldComponents, Map<String, Object> values) {
+        System.out.println("👁️ Applying conditions to " + schema.getFields().size() + " fields...");
         Map<String, FormField> fieldDefs = schema.getFields().stream().collect(Collectors.toMap(FormField::getName, f -> f, (a,b)->a, LinkedHashMap::new));
         for (FormField field : schema.getFields()) {
             Component comp = fieldComponents.get(field.getName());
+            if (comp == null) {
+                System.out.println("   ⚠️ Component not found for field: " + field.getName());
+                continue;
+            }
             boolean visible = evaluateVisibility(field, fieldDefs, values);
+            System.out.println("   - " + field.getName() + ": visible=" + visible + " (condition=" + (field.getCondition() != null ? "present" : "none") + ")");
             comp.setVisible(visible);
         }
     }
@@ -345,6 +420,16 @@ public class FormRenderer {
                 case "checkbox":
                     ans.put(f.getName(), ((Checkbox) c).getValue());
                     break;
+                case "multiselect":
+                    Set<FieldOption> selectedOptions = ((MultiSelectComboBox<FieldOption>) c).getValue();
+                    List<String> selectedValues = selectedOptions.stream()
+                        .map(FieldOption::getValue)
+                        .collect(Collectors.toList());
+                    ans.put(f.getName(), selectedValues);
+                    break;
+                case "label":
+                    // Labels are display-only, don't collect
+                    break;
                 case "enfant":
                     AdhEnfant selectedEnfant = ((ComboBox<AdhEnfant>) c).getValue();
                     if (selectedEnfant != null) {
@@ -390,18 +475,10 @@ public class FormRenderer {
     public static Component createFormWithAnswerBox(FormSchema schema) {
         VerticalLayout wrapper = new VerticalLayout();
         wrapper.setPadding(false);
-        TextArea output = new TextArea("Réponses (JSON)");
-        output.setWidthFull();
-        output.setMinHeight("150px");
         Component form = createForm(schema, answers -> {
-            try {
-                com.fasterxml.jackson.databind.ObjectMapper mapper = new ObjectMapper();
-                output.setValue(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(answers));
-            } catch (Exception ex) {
-                output.setValue("Erreur: " + ex.getMessage());
-            }
+            // Answers are collected but not displayed
         });
-        wrapper.add(form, output);
+        wrapper.add(form);
         return wrapper;
     }
     

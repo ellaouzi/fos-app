@@ -3,6 +3,8 @@ package com.fosagri.application.service;
 import com.fosagri.application.model.Utilisateur;
 import com.fosagri.application.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,18 @@ public class UtilisateurService {
 
     public List<Utilisateur> findAll() {
         return utilisateurRepository.findAll();
+    }
+
+    public Page<Utilisateur> findAll(Pageable pageable) {
+        return utilisateurRepository.findAll(pageable);
+    }
+
+    public Page<Utilisateur> findByUsernameContaining(String username, Pageable pageable) {
+        return utilisateurRepository.findByUsernameContainingIgnoreCase(username, pageable);
+    }
+
+    public long countByUsernameContaining(String username) {
+        return utilisateurRepository.countByUsernameContainingIgnoreCase(username);
     }
 
     public Optional<Utilisateur> findById(Long id) {

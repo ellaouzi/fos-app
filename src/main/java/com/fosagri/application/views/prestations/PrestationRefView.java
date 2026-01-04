@@ -18,6 +18,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ import java.util.List;
 
 @PageTitle("Prestations")
 @Route("prestations")
-@Menu(order = 8, icon = LineAwesomeIconUrl.CLIPBOARD_LIST_SOLID)
+@RolesAllowed("ADMIN")
 public class PrestationRefView extends VerticalLayout {
     
     private final PrestationRefService service;

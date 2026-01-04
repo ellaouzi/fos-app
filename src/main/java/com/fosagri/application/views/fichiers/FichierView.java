@@ -24,7 +24,8 @@ import java.text.SimpleDateFormat;
 
 @PageTitle("Gestion des Fichiers")
 @Route("fichiers")
-@Menu(order = 5, icon = LineAwesomeIconUrl.FILE_ALT_SOLID)
+@Menu(order = 8, icon = LineAwesomeIconUrl.FILE_ALT_SOLID)
+@jakarta.annotation.security.RolesAllowed("ADMIN")
 public class FichierView extends VerticalLayout {
 
     @Autowired

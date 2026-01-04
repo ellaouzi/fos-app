@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Utilisateur {
+public class 	Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -55,7 +55,7 @@ public class Utilisateur {
 
 	private String updatedBy;
 
-	@OneToMany(fetch = FetchType.LAZY,mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Authority> authorities;
 
 	public Utilisateur(){

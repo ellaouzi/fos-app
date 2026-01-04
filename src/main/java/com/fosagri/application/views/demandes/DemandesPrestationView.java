@@ -25,6 +25,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
 import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ import java.util.List;
 
 @PageTitle("Demandes de Prestations")
 @Route("demandes-prestations")
-@Menu(order = 9, icon = LineAwesomeIconUrl.FILE_ALT_SOLID)
+@RolesAllowed("ADMIN")
 public class DemandesPrestationView extends VerticalLayout {
     
     private final DemandePrestationService demandeService;

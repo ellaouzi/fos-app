@@ -56,4 +56,8 @@ public class AdhConjointService {
     public long count() {
         return adhConjointRepository.count();
     }
+
+    public long countByAgent(AdhAgent agent) {
+        return adhConjointRepository.countByAdhAgent(agent);
+    }
 }

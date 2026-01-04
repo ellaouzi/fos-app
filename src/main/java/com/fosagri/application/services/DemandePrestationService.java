@@ -6,6 +6,7 @@ import com.fosagri.application.entities.PrestationRef;
 import com.fosagri.application.repositories.DemandePrestationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -16,21 +17,25 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 @Service
 public class DemandePrestationService {
-    
+
     @Autowired
     private DemandePrestationRepository repository;
-    
+
     @Autowired
     private PrestationRefService prestationRefService;
-    
+
     @Autowired
     private com.fosagri.application.service.AdhAgentService adhAgentService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
     
     public List<DemandePrestation> findAll() {
         return repository.findAll();
     }
     
 
+    @Transactional
     public DemandePrestation save(DemandePrestation demande) {
         return repository.save(demande);
     }
@@ -39,8 +44,30 @@ public class DemandePrestationService {
         repository.deleteById(id);
     }
     
+    @Transactional(readOnly = true)
     public List<DemandePrestation> findByAgent(AdhAgent agent) {
-        return repository.findByAgent(agent);
+        if (agent == null) {
+            System.out.println("⚠️ findByAgent called with null agent");
+            return new java.util.ArrayList<>();
+        }
+        System.out.println("🔍 Finding demandes for agent ID: " + agent.getAdhAgentId() + " (" + agent.getNOM_AG() + " " + agent.getPR_AG() + ")");
+
+        // Use native query to bypass any JPA mapping issues
+        List<DemandePrestation> demandes = repository.findByAgentIdNative(agent.getAdhAgentId());
+        System.out.println("📋 Native query found " + demandes.size() + " demandes for agent " + agent.getNOM_AG());
+
+        // If native query returns results, log them
+        if (!demandes.isEmpty()) {
+            for (DemandePrestation d : demandes) {
+                System.out.println("   📄 Demande ID: " + d.getId() + ", Statut: " + d.getStatut() + ", Date: " + d.getDateDemande());
+            }
+        } else {
+            // Try count to verify
+            long count = repository.countByAgentIdNative(agent.getAdhAgentId());
+            System.out.println("⚠️ No demandes found but count shows: " + count);
+        }
+
+        return demandes;
     }
     
     public List<DemandePrestation> findByPrestation(PrestationRef prestation) {
@@ -99,22 +126,84 @@ public class DemandePrestationService {
     }
     
     public DemandePrestation submitDemandePrestation(AdhAgent agent, PrestationRef prestation, String reponseJson) {
+        return submitDemandePrestation(agent, prestation, reponseJson, null);
+    }
+
+    @Transactional
+    public DemandePrestation submitDemandePrestation(AdhAgent agent, PrestationRef prestation, String reponseJson, String documentsJson) {
         if (!canAgentApplyToPrestation(agent, prestation)) {
             throw new RuntimeException("L'agent ne peut pas soumettre une demande pour cette prestation");
         }
-        
+
         DemandePrestation demande = new DemandePrestation();
         demande.setAgent(agent);
         demande.setPrestation(prestation);
-        
+
         // Extract and handle file uploads from the response JSON
         String cleanedReponseJson = extractAndStoreFiles(reponseJson, demande);
         demande.setReponseJson(cleanedReponseJson);
-        
+
         demande.setStatut("SOUMISE");
         demande.setDateDemande(new Date());
-        
-        return save(demande);
+
+        System.out.println("💾 Saving demande for agent: " + agent.getNOM_AG() + " " + agent.getPR_AG() + " (ID: " + agent.getAdhAgentId() + ")");
+        System.out.println("📋 Prestation: " + prestation.getLabel() + " (ID: " + prestation.getId() + ")");
+
+        // Save first to get ID
+        demande = save(demande);
+        System.out.println("✅ Demande saved with ID: " + demande.getId());
+
+        // Handle separate document uploads (from SecureFileUploadComponent)
+        // Store files to disk and save references
+        if (documentsJson != null && !documentsJson.trim().isEmpty()) {
+            try {
+                // Store files to disk
+                String storedFilesJson = fileStorageService.storeFilesFromJson(
+                    documentsJson,
+                    demande.getId(),
+                    agent.getAdhAgentId()
+                );
+
+                // If there are already documents from form fields, merge them
+                if (demande.getDocumentsJson() != null && !demande.getDocumentsJson().trim().isEmpty()) {
+                    demande.setDocumentsJson(mergeDocumentsJson(demande.getDocumentsJson(), storedFilesJson));
+                } else {
+                    demande.setDocumentsJson(storedFilesJson);
+                }
+                System.out.println("📎 Attached documents stored to disk and saved");
+
+                // Update with file references
+                demande = save(demande);
+            } catch (Exception e) {
+                System.err.println("Error storing files to disk: " + e.getMessage());
+                // Fallback: store in database as before
+                demande.setDocumentsJson(documentsJson);
+                demande = save(demande);
+            }
+        }
+
+        return demande;
+    }
+
+    private String mergeDocumentsJson(String existingJson, String newJson) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            // Parse existing documents
+            List<Object> existingDocs = mapper.readValue(existingJson, new TypeReference<List<Object>>() {});
+
+            // Parse new documents
+            List<Object> newDocs = mapper.readValue(newJson, new TypeReference<List<Object>>() {});
+
+            // Merge
+            existingDocs.addAll(newDocs);
+
+            return mapper.writeValueAsString(existingDocs);
+        } catch (Exception e) {
+            System.err.println("Error merging documents JSON: " + e.getMessage());
+            // If merge fails, prefer the new documents
+            return newJson;
+        }
     }
     
     private String extractAndStoreFiles(String reponseJson, DemandePrestation demande) {
@@ -234,6 +323,17 @@ public class DemandePrestationService {
     
     public long countTerminees(PrestationRef prestation) {
         return repository.countTerminees(prestation);
+    }
+
+    public long countByAgent(AdhAgent agent) {
+        if (agent == null) {
+            return 0;
+        }
+        return repository.countByAgentId(agent.getAdhAgentId());
+    }
+
+    public long countByAgentAndStatut(AdhAgent agent, DemandePrestation.StatutDemande statut) {
+        return repository.countByAgentAndStatut(agent, statut.name());
     }
     
     public List<com.fosagri.application.dto.DemandeViewDto> findByPrestationSafe(PrestationRef prestation) {

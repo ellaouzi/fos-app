@@ -20,4 +20,6 @@ public interface AdhConjointRepository extends JpaRepository<AdhConjoint, Intege
     List<AdhConjoint> findByCodAg(String codAg);
     
     List<AdhConjoint> findByValideTrue();
+
+    long countByAdhAgent(AdhAgent adhAgent);
 }

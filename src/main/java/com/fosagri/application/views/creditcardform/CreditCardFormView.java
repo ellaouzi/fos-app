@@ -19,7 +19,6 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Credit Card Form")
 @Route("demo")
-@Menu(order = 10, icon = LineAwesomeIconUrl.CREDIT_CARD)
 public class CreditCardFormView extends Div {
 
     private TextField cardNumber;
