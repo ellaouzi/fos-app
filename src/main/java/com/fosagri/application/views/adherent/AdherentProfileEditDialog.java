@@ -44,6 +44,8 @@ public class AdherentProfileEditDialog extends Dialog {
     private final EmailField email = new EmailField("Email");
     private final TextField adresse = new TextField("Adresse");
     private final TextField ville = new TextField("Ville");
+    private final TextField nomAr = new TextField("الاسم العائلي (Nom en arabe)");
+    private final TextField prenomAr = new TextField("الاسم الشخصي (Prénom en arabe)");
 
     // Document fields - store uploaded data
     private byte[] newPhoto;
@@ -120,7 +122,13 @@ public class AdherentProfileEditDialog extends Dialog {
         adresse.setValue(agent.getAdresse() != null ? agent.getAdresse() : "");
         ville.setValue(agent.getVille() != null ? agent.getVille() : "");
 
-        form.add(nom, prenom, cin, telephone, email, ville, adresse);
+        // Arabic name fields
+        nomAr.setValue(agent.getNOM_AG_AR() != null ? agent.getNOM_AG_AR() : "");
+        nomAr.getStyle().set("direction", "rtl");
+        prenomAr.setValue(agent.getPR_AG_AR() != null ? agent.getPR_AG_AR() : "");
+        prenomAr.getStyle().set("direction", "rtl");
+
+        form.add(nom, prenom, nomAr, prenomAr, cin, telephone, email, ville, adresse);
         form.setColspan(adresse, 2);
 
         layout.add(form);
@@ -281,6 +289,8 @@ public class AdherentProfileEditDialog extends Dialog {
             newValues.put("mail", email.getValue());
             newValues.put("adresse", adresse.getValue());
             newValues.put("ville", ville.getValue());
+            newValues.put("NOM_AG_AR", nomAr.getValue());
+            newValues.put("PR_AG_AR", prenomAr.getValue());
 
             // Collect documents
             List<DocumentUpload> documents = new ArrayList<>();

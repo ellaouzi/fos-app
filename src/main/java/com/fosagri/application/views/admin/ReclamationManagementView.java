@@ -19,6 +19,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -31,7 +32,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @PageTitle("Gestion des Réclamations")
-@Route("admin/reclamations")
+@Route(value = "admin/reclamations", layout = MainLayout.class)
 @Menu(order = 5, icon = LineAwesomeIconUrl.EXCLAMATION_TRIANGLE_SOLID)
 @RolesAllowed("ADMIN")
 public class ReclamationManagementView extends VerticalLayout {

@@ -46,6 +46,9 @@ public class PrestationFieldService {
     }
 
     public PrestationField save(PrestationField field) {
+        if (field.getId() == null) {
+            field.setId(repository.findMaxId() + 1);
+        }
         if (field.getCreated() == null) {
             field.setCreated(new Date());
         }
@@ -55,7 +58,11 @@ public class PrestationFieldService {
 
     public List<PrestationField> saveAll(List<PrestationField> fields) {
         Date now = new Date();
+        Long maxId = repository.findMaxId();
         for (PrestationField field : fields) {
+            if (field.getId() == null) {
+                field.setId(++maxId);
+            }
             if (field.getCreated() == null) {
                 field.setCreated(now);
             }
@@ -81,12 +88,15 @@ public class PrestationFieldService {
         // Flush to ensure deletes are committed before inserts
         repository.flush();
 
+        // Get max ID after deletion
+        Long maxId = repository.findMaxId();
+
         // Set the reference and save new fields
         Date now = new Date();
         int order = 1;
         for (PrestationField field : newFields) {
-            // Ensure ID is null so database generates new one
-            field.setId(null);
+            // Manually generate ID
+            field.setId(++maxId);
             field.setPrestationRef(prestationRef);
             field.setOrdre(order++);
             field.setCreated(now);

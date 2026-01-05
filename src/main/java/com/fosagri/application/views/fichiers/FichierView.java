@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -23,7 +24,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import java.text.SimpleDateFormat;
 
 @PageTitle("Gestion des Fichiers")
-@Route("fichiers")
+@Route(value = "fichiers", layout = MainLayout.class)
 @Menu(order = 8, icon = LineAwesomeIconUrl.FILE_ALT_SOLID)
 @jakarta.annotation.security.RolesAllowed("ADMIN")
 public class FichierView extends VerticalLayout {

@@ -33,6 +33,8 @@ public class EnfantFormDialog extends Dialog {
     private TextField codAgField;
     private TextField nomField;
     private TextField prenomField;
+    private TextField nomArField;
+    private TextField prenomArField;
     private TextField cinField;
     private Select<String> sexeSelect;
     private DatePicker naissanceField;
@@ -116,6 +118,12 @@ public class EnfantFormDialog extends Dialog {
         prenomField = new TextField("Prénom");
         prenomField.setRequired(true);
 
+        nomArField = new TextField("الاسم العائلي (Nom en arabe)");
+        nomArField.getStyle().set("direction", "rtl");
+
+        prenomArField = new TextField("الاسم الشخصي (Prénom en arabe)");
+        prenomArField.getStyle().set("direction", "rtl");
+
         cinField = new TextField("CIN");
 
         sexeSelect = new Select<>();
@@ -148,7 +156,8 @@ public class EnfantFormDialog extends Dialog {
         // Add fields to form
         formLayout.add(
             codAgField, nomField,
-            prenomField, cinField,
+            prenomField, nomArField,
+            prenomArField, cinField,
             sexeSelect, naissanceField,
             niveauInstructionSelect, lienParenteSelect,
             etatSanteField, emailField,
@@ -245,6 +254,12 @@ public class EnfantFormDialog extends Dialog {
         binder.forField(prenomField)
             .asRequired("Prénom requis")
             .bind(AdhEnfant::getPr_pac, AdhEnfant::setPr_pac);
+
+        binder.forField(nomArField)
+            .bind(AdhEnfant::getNom_PAC_A, AdhEnfant::setNom_PAC_A);
+
+        binder.forField(prenomArField)
+            .bind(AdhEnfant::getPr_PAC_A, AdhEnfant::setPr_PAC_A);
 
         binder.forField(cinField)
             .bind(AdhEnfant::getCin_PAC, AdhEnfant::setCin_PAC);

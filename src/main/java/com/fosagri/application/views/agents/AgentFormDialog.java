@@ -34,6 +34,8 @@ public class AgentFormDialog extends Dialog {
     private TextField codAgField;
     private TextField nomField;
     private TextField prenomField;
+    private TextField nomArField;
+    private TextField prenomArField;
     private TextField cinField;
     private Select<String> sexeSelect;
     private DatePicker naissanceField;
@@ -120,6 +122,12 @@ public class AgentFormDialog extends Dialog {
         prenomField = new TextField("Prénom");
         prenomField.setRequired(true);
 
+        nomArField = new TextField("الاسم العائلي (Nom en arabe)");
+        nomArField.getStyle().set("direction", "rtl");
+
+        prenomArField = new TextField("الاسم الشخصي (Prénom en arabe)");
+        prenomArField.getStyle().set("direction", "rtl");
+
         cinField = new TextField("CIN");
         cinField.setRequired(true);
 
@@ -153,6 +161,7 @@ public class AgentFormDialog extends Dialog {
         formLayout.add(
             idAdhField, codAgField,
             nomField, prenomField,
+            nomArField, prenomArField,
             cinField, sexeSelect,
             naissanceField, emailField,
             telephoneField, villeField,
@@ -242,6 +251,12 @@ public class AgentFormDialog extends Dialog {
         binder.forField(prenomField)
             .asRequired("Prénom requis")
             .bind(AdhAgent::getPR_AG, AdhAgent::setPR_AG);
+
+        binder.forField(nomArField)
+            .bind(AdhAgent::getNOM_AG_AR, AdhAgent::setNOM_AG_AR);
+
+        binder.forField(prenomArField)
+            .bind(AdhAgent::getPR_AG_AR, AdhAgent::setPR_AG_AR);
 
         binder.forField(cinField)
             .asRequired("CIN requis")

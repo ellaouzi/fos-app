@@ -43,6 +43,8 @@ public class AdhAgent implements Serializable {
 	private String codAg;
 	private String NOM_AG;
 	private String PR_AG;
+	private String NOM_AG_AR;  // Nom en arabe
+	private String PR_AG_AR;   // Prénom en arabe
 	private String CIN_AG;
 	private String sex_AG;
 	private Date Naissance;

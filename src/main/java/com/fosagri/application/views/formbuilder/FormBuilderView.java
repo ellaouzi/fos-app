@@ -31,6 +31,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.provider.ListDataProvider;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -44,7 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @PageTitle("Génération des formulaires")
-@Route("form-builder")
+@Route(value = "form-builder", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 @Menu(order = 9, icon = LineAwesomeIconUrl.EDIT_SOLID)
 public class FormBuilderView extends VerticalLayout {

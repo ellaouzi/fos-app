@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -23,7 +24,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 
 @PageTitle("Gestion des Résultats")
-@Route("resultats")
+@Route(value = "resultats", layout = MainLayout.class)
 @Menu(order = 7, icon = LineAwesomeIconUrl.CHART_BAR_SOLID)
 @RolesAllowed("ADMIN")
 public class ResultatView extends VerticalLayout {

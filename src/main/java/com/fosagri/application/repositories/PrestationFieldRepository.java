@@ -20,4 +20,7 @@ public interface PrestationFieldRepository extends JpaRepository<PrestationField
     List<PrestationField> findActiveFieldsByPrestationId(@Param("prestationId") Long prestationId);
 
     void deleteByPrestationRef(PrestationRef prestationRef);
+
+    @Query("SELECT COALESCE(MAX(pf.id), 0) FROM PrestationField pf")
+    Long findMaxId();
 }

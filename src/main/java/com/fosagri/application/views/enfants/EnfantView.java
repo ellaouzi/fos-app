@@ -19,6 +19,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -30,7 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;
 
 @PageTitle("Gestion des Enfants")
-@Route("enfants")
+@Route(value = "enfants", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class EnfantView extends VerticalLayout {
 

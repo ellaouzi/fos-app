@@ -240,61 +240,65 @@ public class DemandeDetailsDialog extends Dialog {
         VerticalLayout section = new VerticalLayout();
         section.setPadding(false);
         section.setSpacing(false);
-        
+
         H3 title = new H3("Fichiers joints");
         section.add(title);
-        
+
         if (demande.getDocumentsJson() != null && !demande.getDocumentsJson().trim().isEmpty()) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                Map<String, Object> documentsData = mapper.readValue(demande.getDocumentsJson(), new TypeReference<Map<String, Object>>() {});
-                
-                boolean hasFiles = false;
-                
-                for (Map.Entry<String, Object> entry : documentsData.entrySet()) {
-                    String fieldName = entry.getKey();
-                    Object value = entry.getValue();
-                    
-                    if (value instanceof List<?>) {
-                        @SuppressWarnings("unchecked")
-                        List<Map<String, Object>> files = (List<Map<String, Object>>) value;
-                        
-                        if (!files.isEmpty()) {
-                            hasFiles = true;
-                            
-                            H4 fieldTitle = new H4("📎 " + fieldName);
-                            section.add(fieldTitle);
-                            
-                            for (Map<String, Object> fileData : files) {
-                                section.add(createFileItem(fileData));
-                            }
+                String json = demande.getDocumentsJson().trim();
+
+                List<Map<String, Object>> allFiles = new java.util.ArrayList<>();
+
+                if (json.startsWith("[")) {
+                    // Array format - direct list of files
+                    allFiles = mapper.readValue(json, new TypeReference<List<Map<String, Object>>>() {});
+                } else if (json.startsWith("{")) {
+                    // Map format - field name -> files mapping
+                    Map<String, Object> documentsData = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+
+                    for (Map.Entry<String, Object> entry : documentsData.entrySet()) {
+                        Object value = entry.getValue();
+
+                        if (value instanceof List<?>) {
+                            @SuppressWarnings("unchecked")
+                            List<Map<String, Object>> files = (List<Map<String, Object>>) value;
+                            allFiles.addAll(files);
+                        } else if (value instanceof Map) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> singleFile = (Map<String, Object>) value;
+                            allFiles.add(singleFile);
                         }
                     }
+
+                    // If no nested structure found, treat whole object as single file
+                    if (allFiles.isEmpty() && documentsData.containsKey("filename")) {
+                        allFiles.add(documentsData);
+                    }
                 }
-                
-                if (!hasFiles) {
+
+                if (allFiles.isEmpty()) {
                     Div noFilesDiv = new Div();
                     noFilesDiv.setText("Aucun fichier joint à cette demande");
                     noFilesDiv.getStyle().set("font-style", "italic")
                                       .set("color", "var(--lumo-secondary-text-color)");
                     section.add(noFilesDiv);
+                } else {
+                    for (Map<String, Object> fileData : allFiles) {
+                        section.add(createFileItem(fileData));
+                    }
                 }
-                
+
             } catch (Exception e) {
+                System.err.println("Error parsing documentsJson: " + e.getMessage());
+                System.err.println("JSON content: " + demande.getDocumentsJson());
+                e.printStackTrace();
+
                 Div errorDiv = new Div();
                 errorDiv.setText("Erreur lors du chargement des fichiers: " + e.getMessage());
                 errorDiv.getStyle().set("color", "var(--lumo-error-text-color)");
                 section.add(errorDiv);
-                
-                // Debug information
-                Div debugDiv = new Div();
-                debugDiv.setText("Debug: Raw documentsJson = " + demande.getDocumentsJson());
-                debugDiv.getStyle().set("font-size", "0.8em")
-                          .set("color", "var(--lumo-secondary-text-color)")
-                          .set("margin-top", "0.5rem")
-                          .set("font-family", "monospace")
-                          .set("word-break", "break-all");
-                section.add(debugDiv);
             }
         } else {
             Div noFilesDiv = new Div();
@@ -302,17 +306,8 @@ public class DemandeDetailsDialog extends Dialog {
             noFilesDiv.getStyle().set("font-style", "italic")
                               .set("color", "var(--lumo-secondary-text-color)");
             section.add(noFilesDiv);
-            
-            // Debug information
-            Div debugDiv = new Div();
-            debugDiv.setText("Debug: documentsJson = " + (demande.getDocumentsJson() == null ? "null" : "'" + demande.getDocumentsJson() + "'"));
-            debugDiv.getStyle().set("font-size", "0.8em")
-                      .set("color", "var(--lumo-secondary-text-color)")
-                      .set("margin-top", "0.5rem")
-                      .set("font-family", "monospace");
-            section.add(debugDiv);
         }
-        
+
         return section;
     }
     
@@ -324,43 +319,65 @@ public class DemandeDetailsDialog extends Dialog {
                           .set("margin-bottom", "4px")
                           .set("background-color", "var(--lumo-contrast-5pct)")
                           .set("border-radius", "var(--lumo-border-radius)");
-        
+
         // File icon
         Span icon = new Span(VaadinIcon.FILE.create());
         icon.getStyle().set("color", "var(--lumo-primary-text-color)");
-        
+
         // File info
         VerticalLayout fileInfo = new VerticalLayout();
         fileInfo.setPadding(false);
         fileInfo.setSpacing(false);
-        
-        String filename = String.valueOf(fileData.get("filename"));
+
+        // Get filename from various possible keys
+        String filename = (String) fileData.get("originalFilename");
+        if (filename == null) filename = (String) fileData.get("storedFilename");
+        if (filename == null) filename = (String) fileData.get("filename");
+        if (filename == null) filename = "Fichier";
+
         String contentType = String.valueOf(fileData.get("contentType"));
         Object sizeObj = fileData.get("size");
-        
+
         Span nameSpan = new Span(filename);
         nameSpan.getStyle().set("font-weight", "500");
-        
+
         String sizeText = "";
         if (sizeObj instanceof Number) {
             long size = ((Number) sizeObj).longValue();
             sizeText = formatFileSize(size);
         }
-        
+
         Span detailsSpan = new Span(contentType + (sizeText.isEmpty() ? "" : " • " + sizeText));
         detailsSpan.getStyle().set("font-size", "12px")
                               .set("color", "var(--lumo-secondary-text-color)");
-        
+
         fileInfo.add(nameSpan, detailsSpan);
-        
+
         // Download button
         Button downloadBtn = new Button("Télécharger", VaadinIcon.DOWNLOAD.create());
         downloadBtn.addThemeVariants(com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL,
                                    com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY);
-        
-        String base64Content = String.valueOf(fileData.get("base64Content"));
-        if (base64Content != null && !base64Content.equals("null")) {
-            StreamResource resource = new StreamResource(filename, () -> {
+
+        String storedPath = (String) fileData.get("storedPath");
+        String base64Content = (String) fileData.get("base64Content");
+
+        if (storedPath != null && !storedPath.isEmpty()) {
+            // File stored on disk - use API endpoint
+            try {
+                String encodedPath = java.net.URLEncoder.encode(storedPath, java.nio.charset.StandardCharsets.UTF_8);
+                Anchor downloadLink = new Anchor("/api/files/download?path=" + encodedPath, "");
+                downloadLink.add(downloadBtn);
+                downloadLink.getElement().setAttribute("download", true);
+                fileItem.add(icon, fileInfo, downloadLink);
+            } catch (Exception e) {
+                downloadBtn.setEnabled(false);
+                downloadBtn.setText("Erreur");
+                fileItem.add(icon, fileInfo, downloadBtn);
+            }
+        } else if (base64Content != null && !base64Content.isEmpty() && !base64Content.equals("null")) {
+            // File stored as base64 in database
+            final String finalFilename = filename;
+            StreamResource resource = new StreamResource(finalFilename, () -> {
                 try {
                     byte[] fileBytes = Base64.getDecoder().decode(base64Content);
                     return new ByteArrayInputStream(fileBytes);
@@ -368,20 +385,20 @@ public class DemandeDetailsDialog extends Dialog {
                     return new ByteArrayInputStream(new byte[0]);
                 }
             });
-            
+
             Anchor downloadLink = new Anchor(resource, "");
             downloadLink.add(downloadBtn);
             downloadLink.getElement().setAttribute("download", true);
-            
+
             fileItem.add(icon, fileInfo, downloadLink);
         } else {
             downloadBtn.setEnabled(false);
             downloadBtn.setText("Indisponible");
             fileItem.add(icon, fileInfo, downloadBtn);
         }
-        
+
         fileItem.setFlexGrow(1, fileInfo);
-        
+
         return fileItem;
     }
     

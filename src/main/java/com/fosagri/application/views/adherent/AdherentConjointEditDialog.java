@@ -49,6 +49,8 @@ public class AdherentConjointEditDialog extends Dialog {
 
     private final TextField nom = new TextField("Nom");
     private final TextField prenom = new TextField("Prénom");
+    private final TextField nomAr = new TextField("الاسم العائلي (Nom en arabe)");
+    private final TextField prenomAr = new TextField("الاسم الشخصي (Prénom en arabe)");
     private final TextField cin = new TextField("CIN");
     private final DatePicker dateNaissance = new DatePicker("Date de naissance");
     private final TextField telephone = new TextField("Téléphone");
@@ -115,10 +117,16 @@ public class AdherentConjointEditDialog extends Dialog {
         sexe.setItems("M", "F");
         sexe.setItemLabelGenerator(s -> "M".equals(s) ? "Masculin" : "Féminin");
 
+        // Set Arabic fields direction
+        nomAr.getStyle().set("direction", "rtl");
+        prenomAr.getStyle().set("direction", "rtl");
+
         // Set values if editing
         if (!isNew) {
             nom.setValue(this.conjoint.getNOM_CONJ() != null ? this.conjoint.getNOM_CONJ() : "");
             prenom.setValue(this.conjoint.getPR_CONJ() != null ? this.conjoint.getPR_CONJ() : "");
+            nomAr.setValue(this.conjoint.getNom_CONJ_A() != null ? this.conjoint.getNom_CONJ_A() : "");
+            prenomAr.setValue(this.conjoint.getPr_CONJ_A() != null ? this.conjoint.getPr_CONJ_A() : "");
             cin.setValue(this.conjoint.getCIN_CONJ() != null ? this.conjoint.getCIN_CONJ() : "");
             telephone.setValue(this.conjoint.getTele() != null ? this.conjoint.getTele() : "");
             sexe.setValue(this.conjoint.getSex_CONJ());
@@ -131,7 +139,7 @@ public class AdherentConjointEditDialog extends Dialog {
         nom.setRequired(true);
         prenom.setRequired(true);
 
-        form.add(nom, prenom, cin, sexe, dateNaissance, telephone);
+        form.add(nom, prenom, nomAr, prenomAr, cin, sexe, dateNaissance, telephone);
 
         layout.add(form);
         return layout;
@@ -295,6 +303,8 @@ public class AdherentConjointEditDialog extends Dialog {
             Map<String, Object> newValues = new LinkedHashMap<>();
             newValues.put("NOM_CONJ", nom.getValue());
             newValues.put("PR_CONJ", prenom.getValue());
+            newValues.put("nom_CONJ_A", nomAr.getValue());
+            newValues.put("pr_CONJ_A", prenomAr.getValue());
             newValues.put("CIN_CONJ", cin.getValue());
             newValues.put("tele", telephone.getValue());
             newValues.put("sex_CONJ", sexe.getValue());

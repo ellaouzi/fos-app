@@ -265,3 +265,95 @@ html {
     --lumo-primary-color-50pct: rgba(59, 107, 53, 0.5);
     --lumo-primary-text-color: #3b6b35;
 }
+
+/* Adherent Portal Sidebar Menu - Left aligned buttons */
+.adherent-portal vaadin-button[theme~="tertiary"] {
+    justify-content: flex-start !important;
+}
+
+.adherent-portal vaadin-button[theme~="tertiary"]::part(label) {
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+.adherent-portal vaadin-button[theme~="tertiary"] [slot="prefix"] {
+    margin-right: 0.75rem;
+}
+
+/* Force left alignment for all sidebar buttons */
+.adherent-portal vaadin-button {
+    --_lumo-button-justify-content: flex-start;
+}
+
+.adherent-portal vaadin-button::part(label) {
+    flex-grow: 1;
+    text-align: left;
+}
+
+/* Logout button - always visible with red color */
+.adherent-portal .logout-btn {
+    color: #ef4444 !important;
+    background: transparent !important;
+}
+
+.adherent-portal .logout-btn:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+}
+
+.adherent-portal .logout-btn::part(label) {
+    color: #ef4444 !important;
+}
+
+.adherent-portal .logout-btn [slot="prefix"] {
+    color: #ef4444 !important;
+}
+
+/* Adherent Portal Full Width and Height Content */
+.adherent-portal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.adherent-portal > * {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Ensure content area takes full space */
+vaadin-app-layout::part(content) {
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make the main content area expand */
+.adherent-portal > div:last-child {
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: auto !important;
+}
+
+/* Agent Menu Buttons - Left Aligned */
+.agent-menu-btn {
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+.agent-menu-btn::part(label) {
+    justify-content: flex-start !important;
+    text-align: left !important;
+    flex-grow: 1;
+}
+
+.agent-menu-btn::part(prefix) {
+    margin-right: 0.75rem;
+}
+
+vaadin-button.agent-menu-btn {
+    --_lumo-button-justify-content: flex-start;
+}

@@ -49,6 +49,8 @@ public class AdherentEnfantEditDialog extends Dialog {
 
     private final TextField nom = new TextField("Nom");
     private final TextField prenom = new TextField("Prénom");
+    private final TextField nomAr = new TextField("الاسم العائلي (Nom en arabe)");
+    private final TextField prenomAr = new TextField("الاسم الشخصي (Prénom en arabe)");
     private final DatePicker dateNaissance = new DatePicker("Date de naissance");
     private final ComboBox<String> sexe = new ComboBox<>("Sexe");
     private final TextField niveauInstruction = new TextField("Niveau d'instruction");
@@ -114,10 +116,16 @@ public class AdherentEnfantEditDialog extends Dialog {
         sexe.setItems("M", "F");
         sexe.setItemLabelGenerator(s -> "M".equals(s) ? "Masculin" : "Féminin");
 
+        // Set Arabic fields direction
+        nomAr.getStyle().set("direction", "rtl");
+        prenomAr.getStyle().set("direction", "rtl");
+
         // Set values if editing
         if (!isNew) {
             nom.setValue(this.enfant.getNom_pac() != null ? this.enfant.getNom_pac() : "");
             prenom.setValue(this.enfant.getPr_pac() != null ? this.enfant.getPr_pac() : "");
+            nomAr.setValue(this.enfant.getNom_PAC_A() != null ? this.enfant.getNom_PAC_A() : "");
+            prenomAr.setValue(this.enfant.getPr_PAC_A() != null ? this.enfant.getPr_PAC_A() : "");
             sexe.setValue(this.enfant.getSex_pac());
             niveauInstruction.setValue(this.enfant.getNiv_INSTRUCTION() != null ? this.enfant.getNiv_INSTRUCTION() : "");
             if (this.enfant.getDat_n_pac() != null) {
@@ -129,7 +137,7 @@ public class AdherentEnfantEditDialog extends Dialog {
         nom.setRequired(true);
         prenom.setRequired(true);
 
-        form.add(nom, prenom, sexe, dateNaissance, niveauInstruction);
+        form.add(nom, prenom, nomAr, prenomAr, sexe, dateNaissance, niveauInstruction);
 
         layout.add(form);
         return layout;
@@ -293,6 +301,8 @@ public class AdherentEnfantEditDialog extends Dialog {
             Map<String, Object> newValues = new LinkedHashMap<>();
             newValues.put("nom_pac", nom.getValue());
             newValues.put("pr_pac", prenom.getValue());
+            newValues.put("nom_PAC_A", nomAr.getValue());
+            newValues.put("pr_PAC_A", prenomAr.getValue());
             newValues.put("sex_pac", sexe.getValue());
             newValues.put("niv_INSTRUCTION", niveauInstruction.getValue());
 

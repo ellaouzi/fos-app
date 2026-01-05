@@ -20,6 +20,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -30,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @PageTitle("Gestion des Prestations")
-@Route("admin/prestations")
+@Route(value = "admin/prestations", layout = MainLayout.class)
 @Menu(order = 3, icon = LineAwesomeIconUrl.CLIPBOARD_LIST_SOLID)
 @RolesAllowed("ADMIN")
 public class PrestationManagementView extends VerticalLayout {

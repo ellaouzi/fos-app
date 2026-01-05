@@ -337,10 +337,35 @@ public class DemandeDetailsDialog extends Dialog {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            List<Map<String, Object>> documents = mapper.readValue(
-                demande.getDocumentsJson(),
-                new TypeReference<List<Map<String, Object>>>() {}
-            );
+            String json = demande.getDocumentsJson();
+
+            // Handle different JSON formats
+            List<Map<String, Object>> documents = new java.util.ArrayList<>();
+
+            if (json.trim().startsWith("[")) {
+                // Array format
+                documents = mapper.readValue(json, new TypeReference<List<Map<String, Object>>>() {});
+            } else if (json.trim().startsWith("{")) {
+                // Single object or map format
+                Map<String, Object> singleDoc = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+                // Check if it's a map of field -> files
+                for (Map.Entry<String, Object> entry : singleDoc.entrySet()) {
+                    if (entry.getValue() instanceof List) {
+                        List<?> fileList = (List<?>) entry.getValue();
+                        for (Object item : fileList) {
+                            if (item instanceof Map) {
+                                documents.add((Map<String, Object>) item);
+                            }
+                        }
+                    } else if (entry.getValue() instanceof Map) {
+                        documents.add((Map<String, Object>) entry.getValue());
+                    }
+                }
+                // If no nested structure found, treat whole object as single document
+                if (documents.isEmpty() && singleDoc.containsKey("filename")) {
+                    documents.add(singleDoc);
+                }
+            }
 
             if (documents.isEmpty()) {
                 Div emptyDiv = new Div();
@@ -353,6 +378,9 @@ public class DemandeDetailsDialog extends Dialog {
                 }
             }
         } catch (Exception e) {
+            System.err.println("Error parsing documentsJson: " + e.getMessage());
+            System.err.println("JSON content: " + demande.getDocumentsJson());
+            e.printStackTrace();
             Div errorDiv = new Div();
             errorDiv.setText("Impossible de charger les pièces jointes");
             errorDiv.getStyle().set("color", "var(--lumo-error-text-color)");
@@ -412,6 +440,8 @@ public class DemandeDetailsDialog extends Dialog {
         actions.getStyle().set("display", "flex").set("gap", "0.5rem");
 
         String storedPath = (String) doc.get("storedPath");
+        String base64Content = (String) doc.get("base64Content");
+
         if (storedPath != null && !storedPath.isEmpty()) {
             // File stored on disk - create download link
             String encodedPath = URLEncoder.encode(storedPath, StandardCharsets.UTF_8);
@@ -431,8 +461,23 @@ public class DemandeDetailsDialog extends Dialog {
             downloadLink.add(downloadBtn);
 
             actions.add(viewLink, downloadLink);
+        } else if (base64Content != null && !base64Content.isEmpty()) {
+            // File stored as base64 in database - create data URL download
+            String contentType = (String) doc.get("contentType");
+            if (contentType == null) contentType = "application/octet-stream";
+
+            String dataUrl = "data:" + contentType + ";base64," + base64Content;
+
+            Anchor downloadLink = new Anchor(dataUrl, "");
+            downloadLink.getElement().setAttribute("download", filename);
+            Button downloadBtn = new Button(VaadinIcon.DOWNLOAD.create());
+            downloadBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_SMALL);
+            downloadBtn.getElement().setAttribute("title", "Télécharger");
+            downloadLink.add(downloadBtn);
+
+            actions.add(downloadLink);
         } else {
-            // File stored in database (legacy) - show info only
+            // No content available
             Span infoSpan = new Span("Fichier disponible");
             infoSpan.getStyle()
                 .set("font-size", "0.8rem")

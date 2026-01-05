@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -26,7 +27,7 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 import java.text.SimpleDateFormat;
 
 @PageTitle("Gestion des Utilisateurs")
-@Route("users")
+@Route(value = "users", layout = MainLayout.class)
 @Menu(order = 10, icon = LineAwesomeIconUrl.USER_SOLID)
 @jakarta.annotation.security.RolesAllowed("ADMIN")
 public class UserView extends VerticalLayout {

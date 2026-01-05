@@ -22,6 +22,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("Demandes de Prestations")
-@Route("demandes-prestations")
+@Route(value = "demandes-prestations", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class DemandesPrestationView extends VerticalLayout {
     

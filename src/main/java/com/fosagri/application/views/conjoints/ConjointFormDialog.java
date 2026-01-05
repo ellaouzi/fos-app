@@ -34,6 +34,8 @@ public class ConjointFormDialog extends Dialog {
     private TextField numConjField;
     private TextField nomField;
     private TextField prenomField;
+    private TextField nomArField;
+    private TextField prenomArField;
     private TextField cinField;
     private Select<String> sexeSelect;
     private DatePicker naissanceField;
@@ -118,6 +120,12 @@ public class ConjointFormDialog extends Dialog {
         prenomField = new TextField("Prénom");
         prenomField.setRequired(true);
 
+        nomArField = new TextField("الاسم العائلي (Nom en arabe)");
+        nomArField.getStyle().set("direction", "rtl");
+
+        prenomArField = new TextField("الاسم الشخصي (Prénom en arabe)");
+        prenomArField.getStyle().set("direction", "rtl");
+
         cinField = new TextField("CIN");
 
         sexeSelect = new Select<>();
@@ -147,6 +155,7 @@ public class ConjointFormDialog extends Dialog {
         formLayout.add(
             codAgField, numConjField,
             nomField, prenomField,
+            nomArField, prenomArField,
             cinField, sexeSelect,
             naissanceField, mariageField,
             situationSelect, emailField,
@@ -246,6 +255,12 @@ public class ConjointFormDialog extends Dialog {
         binder.forField(prenomField)
             .asRequired("Prénom requis")
             .bind(AdhConjoint::getPR_CONJ, AdhConjoint::setPR_CONJ);
+
+        binder.forField(nomArField)
+            .bind(AdhConjoint::getNom_CONJ_A, AdhConjoint::setNom_CONJ_A);
+
+        binder.forField(prenomArField)
+            .bind(AdhConjoint::getPr_CONJ_A, AdhConjoint::setPr_CONJ_A);
 
         binder.forField(cinField)
             .bind(AdhConjoint::getCIN_CONJ, AdhConjoint::setCIN_CONJ);

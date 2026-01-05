@@ -13,7 +13,6 @@ import java.util.Date;
 
 public class PrestationField {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String label;
     private boolean active;

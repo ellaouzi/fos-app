@@ -17,6 +17,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -31,7 +32,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @PageTitle("Analytics - Prestations & Demandes")
-@Route("analytics-dashboard")
+@Route(value = "analytics-dashboard", layout = MainLayout.class)
 @Menu(order = 6, icon = LineAwesomeIconUrl.CHART_PIE_SOLID)
 @RolesAllowed("ADMIN")
 public class AnalyticsDashboardView extends VerticalLayout {

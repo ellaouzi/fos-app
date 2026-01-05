@@ -15,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.fosagri.application.views.MainLayout;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -29,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 @PageTitle("Prestations")
-@Route("prestations")
+@Route(value = "prestations", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class PrestationRefView extends VerticalLayout {
     
